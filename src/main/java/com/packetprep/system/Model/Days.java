@@ -1,27 +1,40 @@
 package com.packetprep.system.Model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
-import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
+@Data
+@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Days {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-    @NotBlank(message = "Community name is required")
-    private String name;
-    @NotBlank(message = "Description is required")
+    private Long dayId;
+    @NotBlank(message = "Post Name cannot be empty or Null")
+    private String dayName;
+    @Nullable
+    private String url;
+    @Nullable
+    @Lob
     private String description;
-    @OneToMany(fetch = LAZY)
-    private List<Topics> Topics;
+    private Integer voteCount = 0;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    private User user;
     private Instant createdDate;
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private Batch batch;
 }

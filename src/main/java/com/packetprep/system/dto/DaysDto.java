@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class DaysDto {
-    private Long id;
-    private String name;
+    private Long dayId;
+    private String batchName;
+    private String dayName;
+    private String url;
     private String description;
-    private Integer numberOfTopics;
 }
