@@ -38,6 +38,6 @@ public class Day {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     private Batch batch;
-  //  @OneToMany(fetch = LAZY)
+  //  @ManyToMany(fetch = LAZY)
   //  private List<Student> students;
 }
