@@ -51,9 +51,9 @@ public class DayService {
                 .collect(toList());
     }
     @Transactional(readOnly = true)
-    public List<DayResponse> getDaysByBatch(Long batchId) {
-        Batch batch = batchRepository.findById(batchId)
-                .orElseThrow(() -> new BatchNotFoundException(batchId.toString()));
+    public List<DayResponse> getDaysByBatch(String batchName) {
+        Batch batch = batchRepository.findByName(batchName)
+                .orElseThrow(() -> new BatchNotFoundException(batchName));
         List<Day> days = dayRepository.findAllByBatch(batch);
         return days.stream().map(dayMapper::mapToDto).collect(toList());
     }

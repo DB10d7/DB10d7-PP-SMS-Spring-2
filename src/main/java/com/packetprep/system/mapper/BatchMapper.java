@@ -22,4 +22,5 @@ public interface BatchMapper {
     @InheritInverseConfiguration
     @Mapping(target = "days", ignore = true)
     Batch mapDtoToBatch(BatchDto batchDto);
+
 }

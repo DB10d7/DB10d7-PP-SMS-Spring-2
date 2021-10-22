@@ -27,6 +27,14 @@ public class BatchService {
         batchDto.setId(batch.getId());
         return batchDto;
     }
+    // New Updation
+  /*  @Transactional
+    public BatchDto update(BatchDto batchDto){
+        Batch batch = batchRepository.findByName(batchDto.getName()).orElse(null);
+        batch.setDescription(batchDto.getDescription());
+        batch.se
+        return batchDto;
+    } */
 
     @Transactional(readOnly = true)
     public List<BatchDto> getAll() {

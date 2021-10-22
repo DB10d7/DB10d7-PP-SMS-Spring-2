@@ -13,7 +13,7 @@ import java.util.List;
 import static org.springframework.http.ResponseEntity.status;
 
 @RestController
-@RequestMapping("/api/days")
+@RequestMapping("/api/days/")
 @AllArgsConstructor
 public class DayController {
 
@@ -35,9 +35,9 @@ public class DayController {
         return status(HttpStatus.OK).body(dayService.getDay(id));
     }
 
-    @GetMapping("by-batch/{id}")
-    public ResponseEntity<List<DayResponse>> getDaysByBatch(Long id) {
-        return status(HttpStatus.OK).body(dayService.getDaysByBatch(id));
+    @GetMapping("by-batch/{name}")
+    public ResponseEntity<List<DayResponse>> getDaysByBatch(@PathVariable String name) {
+        return status(HttpStatus.OK).body(dayService.getDaysByBatch(name));
     }
 
     @GetMapping("by-user/{name}")

@@ -22,6 +22,12 @@ public class BatchController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(batchService.save(batchDto));
     }
+    // New Updation
+  /*  @PostMapping("/update")
+    public ResponseEntity<BatchDto> updateBatch(@RequestBody BatchDto batchDto) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(batchService.save(batchDto));
+    } */
 
     @GetMapping
     public ResponseEntity<List<BatchDto>> getAllBatch() {

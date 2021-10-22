@@ -9,6 +9,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -37,4 +38,6 @@ public class Day {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     private Batch batch;
+  //  @OneToMany(fetch = LAZY)
+  //  private List<Student> students;
 }
