@@ -18,7 +18,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Days {
+public class Day {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long dayId;

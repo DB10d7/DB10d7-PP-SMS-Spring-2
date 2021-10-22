@@ -26,7 +26,7 @@ public class Batch {
     @NotBlank(message = "Description is required")
     private String description;
     @OneToMany(fetch = LAZY)
-    private List<Days> days;
+    private List<Day> days;
     private Instant createdDate;
     @ManyToOne(fetch = LAZY)
     private User user;

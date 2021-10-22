@@ -1,6 +1,6 @@
 package com.packetprep.system.mapper;
 import com.packetprep.system.Model.Batch;
-import com.packetprep.system.Model.Days;
+import com.packetprep.system.Model.Day;
 import com.packetprep.system.dto.BatchDto;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -15,7 +15,7 @@ public interface BatchMapper {
     BatchDto mapBatchToDto(Batch batch);
 
 
-    default Integer mapDays(List<Days> numberOfDays) {
+    default Integer mapDays(List<Day> numberOfDays) {
         return numberOfDays.size();
     }
 

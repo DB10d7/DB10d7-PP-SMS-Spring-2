@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DaysDto {
+public class DayRequest {
     private Long dayId;
     private String batchName;
     private String dayName;

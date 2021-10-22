@@ -22,7 +22,7 @@ public class Topics {
     private String text;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "dayId", referencedColumnName = "dayId")
-    private Days days;
+    private Day day;
     private Instant createdDate;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
