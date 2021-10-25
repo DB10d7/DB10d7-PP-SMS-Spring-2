@@ -42,10 +42,16 @@ public class DayService {
                 .orElseThrow(() -> new BatchNotFoundException(dayRequest.getBatchName()));
         dayRepository.save(dayMapper.map(dayRequest, batch, authService.getCurrentUser()));
     }
-    @Transactional(readOnly = true)
+   /* @Transactional(readOnly = true)
     public DayResponse getDay(Long id) {
         Day day = dayRepository.findById(id)
                 .orElseThrow(() -> new DayNotFoundException(id.toString()));
+        return dayMapper.mapToDto(day);
+    } */
+    @Transactional(readOnly = true)
+    public DayResponse getDay(String dayName) {
+        Day day = dayRepository.findByDayName(dayName)
+                .orElseThrow(() -> new DayNotFoundException(dayName));
         return dayMapper.mapToDto(day);
     }
     @Transactional(readOnly = true)

@@ -3,7 +3,9 @@ import com.packetprep.system.Model.Day;
 import com.packetprep.system.dto.DayRequest;
 import com.packetprep.system.dto.DayResponse;
 import com.packetprep.system.dto.StudentDayMappingDto;
+import com.packetprep.system.dto.StudentDto;
 import com.packetprep.system.service.DayService;
+import com.packetprep.system.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.status;
 
 @RestController
@@ -19,6 +22,7 @@ import static org.springframework.http.ResponseEntity.status;
 public class DayController {
 
     private final DayService dayService;
+    private final StudentService studentService;
 
     @PostMapping
     public ResponseEntity<Void> createDay(@RequestBody DayRequest dayRequest) {
@@ -31,16 +35,24 @@ public class DayController {
         dayService.addStudent(studentDayMappingDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    @GetMapping("/{dayName}/get/allStudents")
+    public ResponseEntity<List<StudentDto>> getAllStudentsByDay(@PathVariable String dayName){
+        return ResponseEntity.status(OK)
+                .body(studentService.getStudentsByDay(dayName));
+    }
 
     @GetMapping
     public ResponseEntity<List<DayResponse>> getAllDays() {
         return status(HttpStatus.OK).body(dayService.getAllDays());
     }
 
-    @GetMapping("/{id}")
+   /* @GetMapping("/{id}")
     public ResponseEntity<DayResponse> getDay(@PathVariable Long id) {
         return status(HttpStatus.OK).body(dayService.getDay(id));
+    } */
+    @GetMapping("/{dayName}")
+    public ResponseEntity<DayResponse> getDay(@PathVariable String dayName ) {
+        return status(HttpStatus.OK).body(dayService.getDay(dayName));
     }
 
     @GetMapping("by-batch/{name}")
