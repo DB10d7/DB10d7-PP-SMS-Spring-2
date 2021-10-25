@@ -45,7 +45,7 @@ public class StudentService {
     }
     @Transactional
     public StudentDto readSingleStudent(String studentName) {
-        Student student = studentRepository.findByName(studentName).orElseThrow(() -> new StudentNotFoundException(studentName));
+        Student student = studentRepository.findByStudentName(studentName).orElseThrow(() -> new StudentNotFoundException(studentName));
         return studentMapper.mapFromStudentToDto(student);
     }
     @Transactional(readOnly = true)

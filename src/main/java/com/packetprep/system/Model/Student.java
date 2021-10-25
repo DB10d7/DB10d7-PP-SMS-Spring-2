@@ -52,7 +52,6 @@ public class Student {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "batchId", referencedColumnName = "id")
     private Batch batch;
-    @ManyToMany(fetch = LAZY)
-    @JoinColumn(name = "dayId", referencedColumnName = "dayId")
+    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL, mappedBy = "students")
     private List<Day> day;
 }

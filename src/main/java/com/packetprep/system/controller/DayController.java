@@ -2,6 +2,7 @@ package com.packetprep.system.controller;
 import com.packetprep.system.Model.Day;
 import com.packetprep.system.dto.DayRequest;
 import com.packetprep.system.dto.DayResponse;
+import com.packetprep.system.dto.StudentDayMappingDto;
 import com.packetprep.system.service.DayService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,13 @@ public class DayController {
         dayService.save(dayRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PutMapping("/addStudent")
+    public ResponseEntity<Void> addStudent(@RequestBody StudentDayMappingDto studentDayMappingDto) {
+        dayService.addStudent(studentDayMappingDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     @GetMapping
     public ResponseEntity<List<DayResponse>> getAllDays() {
