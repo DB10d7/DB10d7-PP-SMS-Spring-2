@@ -40,15 +40,19 @@ public class Student {
     @NotNull
     @Column
     private Integer passOutYear;
+    @Column
+    private Instant createdOn;
+    @Column
+    private Instant updatedOn;
     @Lob
     @NotBlank
     @Column
     @NotEmpty
     private String studentEmail;
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "batchId", referencedColumnName = "batchId")
+    @JoinColumn(name = "batchId", referencedColumnName = "id")
     private Batch batch;
     @ManyToMany(fetch = LAZY)
     @JoinColumn(name = "dayId", referencedColumnName = "dayId")
-    private List<Day> days;
+    private List<Day> day;
 }

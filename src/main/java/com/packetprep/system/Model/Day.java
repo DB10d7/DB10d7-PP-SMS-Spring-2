@@ -23,7 +23,7 @@ public class Day {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long dayId;
-    @NotBlank(message = "Post Name cannot be empty or Null")
+    @NotBlank(message = "Day Name cannot be empty or Null")
     private String dayName;
     @Nullable
     private String url;
@@ -38,6 +38,6 @@ public class Day {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     private Batch batch;
-  //  @ManyToMany(fetch = LAZY)
-  //  private List<Student> students;
+    @ManyToMany(fetch = LAZY)
+    private List<Student> students;
 }

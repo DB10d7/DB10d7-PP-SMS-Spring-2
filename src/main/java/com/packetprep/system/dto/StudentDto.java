@@ -17,6 +17,7 @@ public class StudentDto {
     private String fatherName;
     private Integer age;
     private Long number;
+    private String batchName;
     private String batch;
     private Integer passOutYear;
     private Integer numberOfDays;
