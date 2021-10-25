@@ -46,10 +46,10 @@ public class DayController {
         return status(HttpStatus.OK).body(dayService.getAllDays());
     }
 
-   /* @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<DayResponse> getDay(@PathVariable Long id) {
         return status(HttpStatus.OK).body(dayService.getDay(id));
-    } */
+    }
     @GetMapping("/{dayName}")
     public ResponseEntity<DayResponse> getDay(@PathVariable String dayName ) {
         return status(HttpStatus.OK).body(dayService.getDay(dayName));

@@ -1,6 +1,8 @@
 package com.packetprep.system.controller;
 import com.packetprep.system.Model.Student;
+import com.packetprep.system.dto.DayResponse;
 import com.packetprep.system.dto.StudentDto;
+import com.packetprep.system.service.DayService;
 import com.packetprep.system.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequestMapping("/api/students/")
@@ -46,5 +49,9 @@ public class StudentController {
     public ResponseEntity<List<StudentDto>> getAllStudentsByDay(@PathVariable String dayName){
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByDay(dayName));
+    }
+    @GetMapping("/{studentName}/get/allDays")
+    public ResponseEntity<List<DayResponse>> getAllDaysByStudent(@PathVariable String studentName) {
+        return status(HttpStatus.OK).body(studentService.getDaysByStudent(studentName));
     }
 }

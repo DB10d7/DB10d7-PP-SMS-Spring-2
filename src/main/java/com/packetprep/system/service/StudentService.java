@@ -8,6 +8,7 @@ import com.packetprep.system.exception.BatchNotFoundException;
 
 import com.packetprep.system.exception.DayNotFoundException;
 import com.packetprep.system.exception.StudentNotFoundException;
+import com.packetprep.system.mapper.DayMapper;
 import com.packetprep.system.mapper.StudentMapper;
 import com.packetprep.system.repository.BatchRepository;
 import com.packetprep.system.repository.DayRepository;
@@ -30,6 +31,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private final DayRepository dayRepository;
+    private final DayMapper dayMapper;
 
     @Transactional
     public void save(StudentDto studentDto) {
@@ -61,5 +63,12 @@ public class StudentService {
                 .orElseThrow(() -> new DayNotFoundException(dayName));
         List<Student> students = studentRepository.findAllByDay(day);
         return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+    }
+    @Transactional(readOnly = true)
+    public List<DayResponse> getDaysByStudent(String studentName) {
+        Student student = studentRepository.findByStudentName(studentName)
+                .orElseThrow(() -> new StudentNotFoundException(studentName));
+        List<Day> days = dayRepository.findAllByStudents(student);
+        return days.stream().map(dayMapper::mapToDto).collect(toList());
     }
 }

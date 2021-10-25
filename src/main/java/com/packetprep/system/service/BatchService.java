@@ -1,9 +1,14 @@
 package com.packetprep.system.service;
 import com.packetprep.system.Model.Batch;
+import com.packetprep.system.Model.Student;
 import com.packetprep.system.dto.BatchDto;
+import com.packetprep.system.dto.StudentDto;
+import com.packetprep.system.exception.BatchNotFoundException;
 import com.packetprep.system.exception.SpringPPSystemException;
 import com.packetprep.system.mapper.BatchMapper;
+import com.packetprep.system.mapper.StudentMapper;
 import com.packetprep.system.repository.BatchRepository;
+import com.packetprep.system.repository.StudentRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,9 +23,9 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class BatchService {
 
-    public final BatchRepository batchRepository;
-    public final BatchMapper batchMapper;
-
+    private final BatchRepository batchRepository;
+    private final BatchMapper batchMapper;
+    
     @Transactional
     public BatchDto save(BatchDto batchDto) {
         Batch batch = batchRepository.save(batchMapper.mapDtoToBatch(batchDto));
