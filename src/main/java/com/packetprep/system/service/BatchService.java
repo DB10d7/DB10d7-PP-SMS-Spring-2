@@ -26,7 +26,7 @@ public class BatchService {
 
     @Transactional
     public BatchDto save(BatchDto batchDto) {
-        Batch batch = batchRepository.save(mapFromDtoToBatch(batchDto, authService.getCurrentUser()));
+        Batch batch = batchRepository.save(batchMapper.mapFromDtoToBatch(batchDto, authService.getCurrentUser()));
         batchDto.setId(batch.getId());
         return batchDto;
     }
@@ -46,12 +46,12 @@ public class BatchService {
                 .map(batchMapper::mapFromBatchToDto)
                 .collect(toList());
     }
-    public BatchDto getSubreddit(Long id) {
+    public BatchDto getBatch(Long id) {
         Batch batch = batchRepository.findById(id)
                 .orElseThrow(() -> new SpringPPSystemException("No subreddit found with ID - " + id));
-        return mapFromBatchToDto(batch);
+        return batchMapper.mapFromBatchToDto(batch);
     }
-    public Batch mapFromDtoToBatch(BatchDto batchDto, User user) {
+   /* public Batch mapFromDtoToBatch(BatchDto batchDto, User user) {
         Batch batch = new Batch();
         batch.setName(batchDto.getName());
         batch.setDescription(batchDto.getDescription());
@@ -68,5 +68,5 @@ public class BatchService {
         // batchDto.setNumberOfDays(batch.getNumberOfDays());
         batchDto.setCreatedBy(batch.getCreatedBy());
         return batchDto;
-    }
+    } */
 }

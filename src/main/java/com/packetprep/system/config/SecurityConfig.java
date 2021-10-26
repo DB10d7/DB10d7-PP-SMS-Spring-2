@@ -4,6 +4,7 @@ package com.packetprep.system.config;
 import com.packetprep.system.security.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -39,8 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers( "/api/students/**")
                 .permitAll()
-                .antMatchers("/api/auth/**").hasRole("ADMIN")
-              //  .permitAll()
+                .antMatchers("/api/auth/**")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/batch/")
+                .permitAll();
        /*         .antMatchers(HttpMethod.GET, "/api/subreddit")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/")
@@ -53,10 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/configuration/security",
                         "/swagger-ui.html",
                         "/webjars/**")
-                .permitAll()  */
+                .permitAll()
 
                 .anyRequest()
-                .authenticated();
+                .authenticated(); */
         httpSecurity.addFilterBefore(jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class);
     }

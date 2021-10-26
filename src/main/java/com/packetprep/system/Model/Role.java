@@ -23,7 +23,7 @@ public class Role {
     private Long roleId;
     @NotBlank(message = "Role is required")
     private String roleName;
-    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "role_user",
             joinColumns = { @JoinColumn(name = "role_id")},
             inverseJoinColumns = { @JoinColumn (name = "user_id")}

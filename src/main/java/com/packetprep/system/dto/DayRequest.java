@@ -15,5 +15,5 @@ public class DayRequest {
     private String dayName;
     private String url;
     private String description;
-    private User createdBy;
+    private String createdBy;
 }

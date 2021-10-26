@@ -28,7 +28,6 @@ public class DayService {
 
     private final BatchRepository batchRepository;
     private final DayRepository dayRepository;
-    private final AuthService authService;
     private final DayMapper dayMapper;
     private final UserRepository userRepository;
 
@@ -36,7 +35,9 @@ public class DayService {
     public void save(DayRequest dayRequest) {
         Batch batch = batchRepository.findByName(dayRequest.getBatchName())
                 .orElseThrow(() -> new BatchNotFoundException(dayRequest.getBatchName()));
-        dayRepository.save(dayMapper.mapFromDtoToDay(dayRequest, batch, authService.getCurrentUser()));
+        User user = userRepository.findByUsername(dayRequest.getCreatedBy())
+                        .orElseThrow(() -> new UsernameNotFoundException(dayRequest.getCreatedBy()) );
+        dayRepository.save(dayMapper.mapFromDtoToDay(dayRequest, batch, user));
     }
     @Transactional(readOnly = true)
     public DayResponse getDay(Long id) {

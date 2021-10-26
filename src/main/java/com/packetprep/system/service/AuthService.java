@@ -1,13 +1,15 @@
 package com.packetprep.system.service;
 
-
+import com.packetprep.system.Model.Role;
 import com.packetprep.system.Model.User;
 import com.packetprep.system.Model.VerificationToken;
 import com.packetprep.system.dto.AuthenticationResponse;
 import com.packetprep.system.dto.LoginRequest;
 import com.packetprep.system.dto.RefreshTokenRequest;
 import com.packetprep.system.dto.RegisterRequest;
+import com.packetprep.system.exception.RoleNotFoundException;
 import com.packetprep.system.exception.SpringPPSystemException;
+import com.packetprep.system.repository.RoleRepository;
 import com.packetprep.system.repository.UserRepository;
 import com.packetprep.system.repository.VerificationTokenRepository;
 import com.packetprep.system.security.JwtProvider;
@@ -35,12 +37,16 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RefreshTokenService refreshTokenService;
     private final VerificationTokenRepository verificationTokenRepository;
-    
+    private final RoleRepository roleRepository;
+
 
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
+        Role role = roleRepository.findByRoleName(registerRequest.getRole())
+                .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
+        user.setRole(role);
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreated(Instant.now());
         user.setEnabled(true);
@@ -100,5 +106,29 @@ public class AuthService {
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(refreshTokenRequest.getUsername())
                 .build();
+    }
+    public void update(RegisterRequest registerRequest, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+        Role role = roleRepository.findByRoleName(registerRequest.getRole())
+                .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
+        user.setUsername(registerRequest.getUsername());
+        user.setEmail(registerRequest.getEmail());
+        user.setRole(role);
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setCreated(Instant.now());
+        user.setEnabled(true);
+        userRepository.save(user);
+
+    }
+    public void delete( String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+        userRepository.deleteById(user.getUserId());
+    }
+    public void deleteById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found - "));
+        userRepository.deleteById(id);
     }
 }

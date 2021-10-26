@@ -27,6 +27,7 @@ public class DayMapper {
         DayResponse dayResponse = new DayResponse();
         dayResponse.setId(day.getDayId());
         dayResponse.setUrl(day.getUrl());
+        dayResponse.setDescription(day.getDescription());
         dayResponse.setCreatedBy(day.getCreatedBy().getUsername());
         dayResponse.setBatchName(day.getBatch().getName());
         dayResponse.setDayName(day.getDayName());

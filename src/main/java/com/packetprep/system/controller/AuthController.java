@@ -25,6 +25,24 @@ public class AuthController {
         return new ResponseEntity<>("User Registration Successful",
                 HttpStatus.OK);
     }
+    @PutMapping("/update/{username}")
+    public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest, @PathVariable String username) {
+        authService.update(registerRequest, username);
+        return new ResponseEntity<>("User Update Successful",
+                HttpStatus.OK);
+    }
+    @DeleteMapping("/delete/id")
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+        authService.deleteById(id);
+        return new ResponseEntity<>("User Successfully Deleted",
+                HttpStatus.OK);
+    }
+    @DeleteMapping("/delete/{username}")
+    public ResponseEntity<String> delete(@PathVariable String username) {
+        authService.delete(username);
+        return new ResponseEntity<>("User Successfully Deleted",
+                HttpStatus.OK);
+    }
     @GetMapping("accountVerification/{token}")
     public ResponseEntity<String> verifyAccount(@PathVariable String token) {
         authService.verifyAccount(token);

@@ -15,7 +15,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/api/batch")
+@RequestMapping("/api/batch/")
 @AllArgsConstructor
 @Slf4j
 public class BatchController {
@@ -51,6 +51,6 @@ public class BatchController {
     public ResponseEntity<BatchDto> getBatch(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(batchService.getSubreddit(id));
+                .body(batchService.getBatch(id));
     }
 }

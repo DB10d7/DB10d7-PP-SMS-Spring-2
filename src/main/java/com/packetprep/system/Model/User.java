@@ -31,8 +31,8 @@ public class User {
     @Email
     @NotEmpty(message = "Email is required")
     private String email;
-    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Role> role;
+    @ManyToOne(fetch = LAZY)
+    private Role role;
     @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Day> day;
     @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL, mappedBy = "user")
