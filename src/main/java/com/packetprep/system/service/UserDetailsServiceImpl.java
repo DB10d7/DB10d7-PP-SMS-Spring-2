@@ -38,4 +38,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private Collection<? extends GrantedAuthority> getAuthorities(String role) {
         return singletonList(new SimpleGrantedAuthority(role));
     }
+
+  /*  @Transactional(readOnly = true)
+    public UserDetails loadStudentByStudentName(String studentName) {
+        Optional<Student> userOptional = studentRepository.findByStudentName(studentName);
+        Student student = userOptional
+                .orElseThrow(() -> new UsernameNotFoundException("No user " +
+                        "Found with username : " + studentName));
+
+        return new org.springframework.security
+                .core.userdetails.User(student.getStudentName(), student.getPassword(),
+                student.isEnabled(), true, true,
+                true, getAuthorities("Student"));
+    } */
 }

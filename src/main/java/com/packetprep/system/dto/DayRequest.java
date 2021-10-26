@@ -1,4 +1,5 @@
 package com.packetprep.system.dto;
+import com.packetprep.system.Model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +15,5 @@ public class DayRequest {
     private String dayName;
     private String url;
     private String description;
+    private User createdBy;
 }

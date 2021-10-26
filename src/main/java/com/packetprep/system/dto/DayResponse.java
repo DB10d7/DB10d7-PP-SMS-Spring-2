@@ -11,7 +11,7 @@ public class DayResponse {
     private String dayName;
     private String url;
     private String description;
-    private String userName;
+    private String createdBy;
     private String batchName;
    // private Integer voteCount;
   //  private Integer commentCount;

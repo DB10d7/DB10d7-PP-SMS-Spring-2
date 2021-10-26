@@ -12,10 +12,8 @@ import com.packetprep.system.repository.UserRepository;
 import com.packetprep.system.repository.VerificationTokenRepository;
 import com.packetprep.system.security.JwtProvider;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,6 +35,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RefreshTokenService refreshTokenService;
     private final VerificationTokenRepository verificationTokenRepository;
+    
 
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
@@ -45,7 +44,6 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreated(Instant.now());
         user.setEnabled(true);
-
         userRepository.save(user);
 
        // String token = generateVerificationToken(user);

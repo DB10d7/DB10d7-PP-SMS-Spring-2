@@ -1,34 +1,35 @@
 package com.packetprep.system.mapper;
-
-import com.packetprep.system.Model.*;
+import com.packetprep.system.Model.Batch;
+import com.packetprep.system.Model.Day;
+import com.packetprep.system.Model.User;
 import com.packetprep.system.dto.DayRequest;
 import com.packetprep.system.dto.DayResponse;
-//import com.packetprep.system.service.AuthService;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
+
+import java.time.Instant;
+
 @Mapper(componentModel = "spring")
-public abstract class DayMapper {
+public class DayMapper {
 
-  //  @Autowired
-  //  private AuthService authService;
-
-    @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
-    @Mapping(target = "description", source = "dayRequest.description")
-    @Mapping(target = "batch", source = "batch")
-    @Mapping(target = "voteCount", constant = "0")
-    @Mapping(target = "user", source = "user")
-    public abstract Day map(DayRequest dayRequest, Batch batch, User user);
-
-    @Mapping(target = "id", source = "dayId")
-    @Mapping(target = "batchName", source = "batch.name")
-    @Mapping(target = "userName", source = "user.username")
-   // @Mapping(target = "commentCount", expression = "java(commentCount(post))")
-    //@Mapping(target = "duration", expression = "java(getDuration(day))")
-   // @Mapping(target = "upVote", expression = "java(isPostUpVoted(post))")
-   // @Mapping(target = "downVote", expression = "java(isPostDownVoted(post))")
-    public abstract DayResponse mapToDto(Day day);
-
+    public Day mapFromDtoToDay(DayRequest dayRequest, Batch batch, User user) {
+        Day day = new Day();
+        day.setDayName(dayRequest.getDayName());
+        day.setUrl(dayRequest.getUrl());
+        day.setCreatedBy(user);
+        day.setDescription(dayRequest.getDescription());
+        day.setBatch(batch);
+        day.setCreatedOn(Instant.now());
+        day.setUpdatedOn(Instant.now());
+        return day;
+    }
+    public DayResponse mapFromDayToDto(Day day) {
+        DayResponse dayResponse = new DayResponse();
+        dayResponse.setId(day.getDayId());
+        dayResponse.setUrl(day.getUrl());
+        dayResponse.setCreatedBy(day.getCreatedBy().getUsername());
+        dayResponse.setBatchName(day.getBatch().getName());
+        dayResponse.setDayName(day.getDayName());
+        return dayResponse;
+    }
 }

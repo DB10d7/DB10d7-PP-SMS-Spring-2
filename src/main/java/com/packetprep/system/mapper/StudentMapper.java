@@ -1,18 +1,21 @@
 package com.packetprep.system.mapper;
 
-import com.packetprep.system.Model.Batch;
-import com.packetprep.system.Model.Student;
-import com.packetprep.system.dto.StudentDto;
+import com.packetprep.system.Model.User;
+import com.packetprep.system.dto.AuthenticationResponse;
 import org.mapstruct.Mapper;
 
+
 import java.time.Instant;
+
 
 @Mapper(componentModel = "spring")
 public class StudentMapper {
 
-    public Student mapFromDtoToStudent(StudentDto studentDto, Batch batch) {
+
+  /*  public Student mapFromDtoToStudent(StudentDto studentDto, Batch batch) {
         Student student = new Student();
         student.setStudentName(studentDto.getStudentName());
+        student.setPassword(studentDto.getPassword());
         student.setStudentEmail(studentDto.getStudentEmail());
         student.setName(studentDto.getName());
         student.setFatherName(studentDto.getFatherName());
@@ -23,12 +26,27 @@ public class StudentMapper {
       //  student.setDays();
         student.setCreatedOn(Instant.now());
         student.setUpdatedOn(Instant.now());
+        student.setRole(studentDto.getRole());
         return student;
     }
+  public User mapFromDtoToStudent(RegisterRequest registerRequest){
+      User user = new User();
+      user.setUsername(registerRequest.getUsername());
+      user.setEmail(registerRequest.getEmail());
+      user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+      user.setCreated(Instant.now());
+      user.setEnabled(true);
+      return user;
+  } */
 
-    public StudentDto mapFromStudentToDto(Student student) {
-        StudentDto studentDto = new StudentDto();
-        studentDto.setStudentId(student.getStudentId());
+    public AuthenticationResponse mapFromStudentToDto(User user) {
+        AuthenticationResponse studentDto = new AuthenticationResponse();
+        studentDto.setUsername(user.getUsername());
+        return studentDto;
+    }
+   /* public AuthenticationResponse mapFromStudentToDto(User user) {
+        AuthenticationResponse studentDto = new AuthenticationResponse();
+        studentDto.setUsername(user.getUsername());
         studentDto.setStudentName(student.getStudentName());
         studentDto.setStudentEmail(student.getStudentEmail());
         studentDto.setName(student.getName());
@@ -38,5 +56,5 @@ public class StudentMapper {
         studentDto.setNumber(student.getNumber());
         studentDto.setPassOutYear(student.getPassOutYear());
         return studentDto;
-    }
+    } */
 }

@@ -1,9 +1,6 @@
 package com.packetprep.system.controller;
 import com.packetprep.system.Model.Day;
-import com.packetprep.system.dto.DayRequest;
-import com.packetprep.system.dto.DayResponse;
-import com.packetprep.system.dto.StudentDayMappingDto;
-import com.packetprep.system.dto.StudentDto;
+import com.packetprep.system.dto.*;
 import com.packetprep.system.service.DayService;
 import com.packetprep.system.service.StudentService;
 import lombok.AllArgsConstructor;
@@ -30,13 +27,13 @@ public class DayController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/addStudent")
+   /* @PutMapping("/addStudent")
     public ResponseEntity<Void> addStudent(@RequestBody StudentDayMappingDto studentDayMappingDto) {
         dayService.addStudent(studentDayMappingDto);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
+    }*/
     @GetMapping("/{dayName}/get/allStudents")
-    public ResponseEntity<List<StudentDto>> getAllStudentsByDay(@PathVariable String dayName){
+    public ResponseEntity<List<AuthenticationResponse>> getAllStudentsByDay(@PathVariable String dayName){
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByDay(dayName));
     }

@@ -25,9 +25,20 @@ public class Batch {
     private String name;
     @NotBlank(message = "Description is required")
     private String description;
+    @Column
+    private Instant createdOn;
+    @Column
+    private Instant updatedOn;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    private User createdBy;
     @OneToMany(fetch = LAZY)
     private List<Day> days;
     private Instant createdDate;
-    @ManyToOne(fetch = LAZY)
-    private User user;
+    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "batch_user",
+            joinColumns = { @JoinColumn(name = "batch_id")},
+            inverseJoinColumns = { @JoinColumn (name = "user_id")}
+    )
+    private List<User> user;
 }

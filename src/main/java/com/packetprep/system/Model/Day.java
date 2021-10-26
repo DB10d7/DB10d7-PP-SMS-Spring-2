@@ -30,18 +30,20 @@ public class Day {
     @Nullable
     @Lob
     private String description;
-    private Integer voteCount = 0;
+    @Column
+    private Instant createdOn;
+    @Column
+    private Instant updatedOn;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
-    private User user;
-    private Instant createdDate;
+    private User createdBy;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     private Batch batch;
     @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "day_student",
+    @JoinTable(name = "day_user",
         joinColumns = { @JoinColumn(name = "day_id")},
-        inverseJoinColumns = { @JoinColumn (name = "student_id")}
+        inverseJoinColumns = { @JoinColumn (name = "user_id")}
     )
-    private List<Student> students;
+    private List<User> user;
 }
