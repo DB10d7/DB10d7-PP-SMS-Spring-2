@@ -38,10 +38,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/api/students/**")
-                .permitAll()
-                .antMatchers("/api/auth/**")
-                .permitAll();
+                .antMatchers("/api/auth/signup").permitAll()
+                .antMatchers("/api/auth/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/students/").permitAll()
+                .antMatchers( "/api/students/**").hasAnyRole("ADMIN","STUDENT","DEFAULT","SUPER-ADMIN")
+                .antMatchers("/api/auth/**").hasAnyRole("ADMIN","SUPER-ADMIN");
+
+             //   .permitAll()
+
+             //   .permitAll();
+
             /*    .antMatchers(HttpMethod.GET, "/api/batch/")
                 .permitAll();
                 .antMatchers(HttpMethod.GET, "/api/subreddit")
