@@ -4,6 +4,7 @@ import com.packetprep.system.Model.Day;
 import com.packetprep.system.Model.User;
 import com.packetprep.system.dto.DayRequest;
 import com.packetprep.system.dto.DayResponse;
+import com.packetprep.system.dto.StudentDayMappingDto;
 import com.packetprep.system.exception.BatchNotFoundException;
 import com.packetprep.system.exception.DayNotFoundException;
 import com.packetprep.system.mapper.DayMapper;
@@ -74,11 +75,11 @@ public class DayService {
                 .map(dayMapper::mapFromDayToDto)
                 .collect(toList());
     }
- /*   public void addStudent(StudentDayMappingDto studentDayMappingDto){
-        Student student = studentRepository.findByStudentName(studentDayMappingDto.getStudentName())
-                .orElseThrow(() -> new StudentNotFoundException(studentDayMappingDto.getStudentName()));
+   public void addStudent(StudentDayMappingDto studentDayMappingDto){
+        User student = userRepository.findByUsername(studentDayMappingDto.getStudentName())
+                .orElseThrow(() -> new UsernameNotFoundException(studentDayMappingDto.getStudentName()));
         Day day = dayRepository.findByDayName(studentDayMappingDto.getDayName())
                 .orElseThrow(() -> new DayNotFoundException(studentDayMappingDto.getDayName()));
-        day.getStudents().add(student);
-    } */
+        day.getUser().add(student);
+    }
 }

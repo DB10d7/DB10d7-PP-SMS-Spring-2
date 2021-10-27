@@ -41,10 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers( "/api/students/**")
                 .permitAll()
                 .antMatchers("/api/auth/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/batch/")
                 .permitAll();
-       /*         .antMatchers(HttpMethod.GET, "/api/subreddit")
+            /*    .antMatchers(HttpMethod.GET, "/api/batch/")
+                .permitAll();
+                .antMatchers(HttpMethod.GET, "/api/subreddit")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/")
                 .permitAll()

@@ -39,24 +39,24 @@ public class StudentController {
         return new ResponseEntity<>("Account Activated Successfully", HttpStatus.OK);
     } */
     @GetMapping
-    public ResponseEntity<List<AuthenticationResponse>> getAllStudents() {
+    public ResponseEntity<List<StudentResponse>> getAllStudents() {
         return ResponseEntity.status(OK)
                 .body(studentService.showAllStudent());
     }
 
     @GetMapping("/get/{studentName}")
-    public ResponseEntity<AuthenticationResponse> getSingleStudent(@PathVariable String studentName ) {
+    public ResponseEntity<StudentResponse> getSingleStudent(@PathVariable String studentName ) {
         return new ResponseEntity<>(studentService.readSingleStudent(studentName), HttpStatus.OK);
     }
 
     @GetMapping("/by-batch/{batchName}")
-    public ResponseEntity<List<AuthenticationResponse>> getAllStudentsByBatch(@PathVariable String batchName) {
+    public ResponseEntity<List<StudentResponse>> getAllStudentsByBatch(@PathVariable String batchName) {
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByBatch(batchName));
     }
 
     @GetMapping("/by-day/{dayName}")
-    public ResponseEntity<List<AuthenticationResponse>> getAllStudentsByDay(@PathVariable String dayName){
+    public ResponseEntity<List<StudentResponse>> getAllStudentsByDay(@PathVariable String dayName){
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByDay(dayName));
     }

@@ -35,8 +35,8 @@ public class User {
     private Role role;
     @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Day> day;
-    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Batch> batch;
+    @ManyToOne(fetch = LAZY)
+    private Batch batch;
     private Instant created;
     private boolean enabled;
 }

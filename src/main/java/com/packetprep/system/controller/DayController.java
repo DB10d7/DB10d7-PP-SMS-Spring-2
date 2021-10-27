@@ -27,13 +27,13 @@ public class DayController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-   /* @PutMapping("/addStudent")
+    @PutMapping("/addStudent")
     public ResponseEntity<Void> addStudent(@RequestBody StudentDayMappingDto studentDayMappingDto) {
         dayService.addStudent(studentDayMappingDto);
         return new ResponseEntity<>(HttpStatus.OK);
-    }*/
+    }
     @GetMapping("/{dayName}/get/allStudents")
-    public ResponseEntity<List<AuthenticationResponse>> getAllStudentsByDay(@PathVariable String dayName){
+    public ResponseEntity<List<StudentResponse>> getAllStudentsByDay(@PathVariable String dayName){
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByDay(dayName));
     }

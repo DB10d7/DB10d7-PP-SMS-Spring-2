@@ -2,7 +2,8 @@ package com.packetprep.system.mapper;
 
 import com.packetprep.system.Model.Batch;
 import com.packetprep.system.Model.User;
-import com.packetprep.system.dto.BatchDto;
+import com.packetprep.system.dto.BatchRequest;
+import com.packetprep.system.dto.BatchResponse;
 import org.mapstruct.Mapper;
 
 import java.time.Instant;
@@ -10,22 +11,22 @@ import java.time.Instant;
 @Mapper(componentModel = "spring")
 public class BatchesMapper {
 
-    public Batch mapFromDtoToBatch(BatchDto batchDto, User user) {
+    public Batch mapFromDtoToBatch(BatchRequest batchRequest, User user) {
         Batch batch = new Batch();
-        batch.setName(batchDto.getName());
-        batch.setDescription(batchDto.getDescription());
+        batch.setName(batchRequest.getName());
+        batch.setDescription(batchRequest.getDescription());
         batch.setCreatedBy(user);
         batch.setCreatedOn(Instant.now());
         batch.setUpdatedOn(Instant.now());
         return batch;
     }
-    public BatchDto mapFromBatchToDto(Batch batch){
-        BatchDto batchDto = new BatchDto();
-        batchDto.setName(batch.getName());
-        batchDto.setDescription(batch.getDescription());
-        batchDto.setId(batch.getId());
+    public BatchResponse mapFromBatchToDto(Batch batch){
+        BatchResponse batchResponse = new BatchResponse();
+        batchResponse.setName(batch.getName());
+        batchResponse.setDescription(batch.getDescription());
+        batchResponse.setId(batch.getId());
        // batchDto.setNumberOfDays(batch.getNumberOfDays());
-        batchDto.setCreatedBy(batch.getCreatedBy());
-        return batchDto;
+        batchResponse.setCreatedBy(batch.getCreatedBy().getUsername());
+        return batchResponse;
     }
 }

@@ -1,7 +1,9 @@
 package com.packetprep.system.controller;
 import com.packetprep.system.dto.AuthenticationResponse;
-import com.packetprep.system.dto.BatchDto;
+import com.packetprep.system.dto.BatchRequest;
 
+import com.packetprep.system.dto.BatchResponse;
+import com.packetprep.system.dto.StudentResponse;
 import com.packetprep.system.service.BatchService;
 import com.packetprep.system.service.StudentService;
 import lombok.AllArgsConstructor;
@@ -24,9 +26,9 @@ public class BatchController {
     private final StudentService studentService;
 
     @PostMapping
-    public ResponseEntity<BatchDto> createBatch(@RequestBody BatchDto batchDto) {
+    public ResponseEntity<BatchRequest> createBatch(@RequestBody BatchRequest batchRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(batchService.save(batchDto));
+                .body(batchService.save(batchRequest));
     }
     // New Updation
   /*  @PostMapping("/update")
@@ -35,22 +37,28 @@ public class BatchController {
                 .body(batchService.save(batchDto));
     } */
     @GetMapping("/{batchName}/get/allStudents")
-    public ResponseEntity<List<AuthenticationResponse>> getAllStudentsByBatch(@PathVariable String batchName) {
+    public ResponseEntity<List<StudentResponse>> getAllStudentsByBatch(@PathVariable String batchName) {
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByBatch(batchName));
     }
 
     @GetMapping
-    public ResponseEntity<List<BatchDto>> getAllBatch() {
+    public ResponseEntity<List<BatchResponse>> getAllBatch() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(batchService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BatchDto> getBatch(@PathVariable Long id) {
+    public ResponseEntity<BatchResponse> getBatch(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(batchService.getBatch(id));
+    }
+    @GetMapping("/{batchName}")
+    public ResponseEntity<BatchResponse> getBatchByName(@PathVariable String batchName) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(batchService.getBatchByName(batchName));
     }
 }

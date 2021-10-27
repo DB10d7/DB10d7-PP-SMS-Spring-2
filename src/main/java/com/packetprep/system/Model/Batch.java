@@ -35,10 +35,10 @@ public class Batch {
     @OneToMany(fetch = LAZY)
     private List<Day> days;
     private Instant createdDate;
-    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
+  /*  @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "batch_user",
             joinColumns = { @JoinColumn(name = "batch_id")},
             inverseJoinColumns = { @JoinColumn (name = "user_id")}
     )
-    private List<User> user;
+    private List<User> user; */
 }

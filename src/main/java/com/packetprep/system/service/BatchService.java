@@ -1,16 +1,19 @@
 package com.packetprep.system.service;
 import com.packetprep.system.Model.Batch;
 import com.packetprep.system.Model.User;
-import com.packetprep.system.dto.BatchDto;
+import com.packetprep.system.dto.BatchRequest;
+import com.packetprep.system.dto.BatchResponse;
+import com.packetprep.system.exception.BatchNotFoundException;
 import com.packetprep.system.exception.SpringPPSystemException;
 import com.packetprep.system.mapper.BatchesMapper;
 import com.packetprep.system.repository.BatchRepository;
+import com.packetprep.system.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -23,12 +26,15 @@ public class BatchService {
     private final BatchRepository batchRepository;
     private final BatchesMapper batchMapper;
     private final AuthService authService;
+    private final UserRepository userRepository;
 
     @Transactional
-    public BatchDto save(BatchDto batchDto) {
-        Batch batch = batchRepository.save(batchMapper.mapFromDtoToBatch(batchDto, authService.getCurrentUser()));
-        batchDto.setId(batch.getId());
-        return batchDto;
+    public BatchRequest save(BatchRequest batchRequest) {
+        User user = userRepository.findByUsername(batchRequest.getCreatedBy())
+                .orElseThrow(() -> new UsernameNotFoundException(batchRequest.getCreatedBy()) );
+        Batch batch = batchRepository.save(batchMapper.mapFromDtoToBatch(batchRequest, user));
+        batchRequest.setId(batch.getId());
+        return batchRequest;
     }
     // New Updation
   /*  @Transactional
@@ -40,15 +46,20 @@ public class BatchService {
     } */
 
     @Transactional(readOnly = true)
-    public List<BatchDto> getAll() {
+    public List<BatchResponse> getAll() {
         return batchRepository.findAll()
                 .stream()
                 .map(batchMapper::mapFromBatchToDto)
                 .collect(toList());
     }
-    public BatchDto getBatch(Long id) {
+    public BatchResponse getBatch(Long id) {
         Batch batch = batchRepository.findById(id)
-                .orElseThrow(() -> new SpringPPSystemException("No subreddit found with ID - " + id));
+                .orElseThrow(() -> new BatchNotFoundException("No subreddit found with ID - " + id));
+        return batchMapper.mapFromBatchToDto(batch);
+    }
+    public BatchResponse getBatchByName(String batchName) {
+        Batch batch = batchRepository.findByName(batchName)
+                .orElseThrow(() -> new BatchNotFoundException(batchName));
         return batchMapper.mapFromBatchToDto(batch);
     }
    /* public Batch mapFromDtoToBatch(BatchDto batchDto, User user) {

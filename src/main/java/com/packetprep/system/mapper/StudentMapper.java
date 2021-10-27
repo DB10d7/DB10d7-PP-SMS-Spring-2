@@ -2,6 +2,7 @@ package com.packetprep.system.mapper;
 
 import com.packetprep.system.Model.User;
 import com.packetprep.system.dto.AuthenticationResponse;
+import com.packetprep.system.dto.StudentResponse;
 import org.mapstruct.Mapper;
 
 
@@ -39,10 +40,13 @@ public class StudentMapper {
       return user;
   } */
 
-    public AuthenticationResponse mapFromStudentToDto(User user) {
-        AuthenticationResponse studentDto = new AuthenticationResponse();
-        studentDto.setUsername(user.getUsername());
-        return studentDto;
+    public StudentResponse mapFromStudentToDto(User user) {
+        StudentResponse studentResponse = new StudentResponse();
+        studentResponse.setUsername(user.getUsername());
+        studentResponse.setEmail(user.getEmail());
+        studentResponse.setRole(user.getRole().getRoleName());
+     //   studentResponse.setBatch(user.getBatch().getName());
+        return studentResponse;
     }
    /* public AuthenticationResponse mapFromStudentToDto(User user) {
         AuthenticationResponse studentDto = new AuthenticationResponse();

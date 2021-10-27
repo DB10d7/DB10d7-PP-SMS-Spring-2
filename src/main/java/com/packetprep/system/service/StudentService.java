@@ -111,24 +111,24 @@ public class StudentService {
            studentRepository.save(student);
        } */
     @Transactional
-    public List<AuthenticationResponse> showAllStudent() {
+    public List<StudentResponse> showAllStudent() {
         List<User> students = userRepository.findAll();
         return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
     @Transactional
-    public AuthenticationResponse readSingleStudent(String studentName) {
+    public StudentResponse readSingleStudent(String studentName) {
         User student = userRepository.findByUsername(studentName).orElseThrow(() -> new StudentNotFoundException(studentName));
         return studentMapper.mapFromStudentToDto(student);
     }
     @Transactional(readOnly = true)
-    public List<AuthenticationResponse>getStudentsByBatch(String batchName) {
+    public List<StudentResponse>getStudentsByBatch(String batchName) {
         Batch batch = batchRepository.findByName(batchName)
                 .orElseThrow(() -> new BatchNotFoundException(batchName));
         List<User> students = userRepository.findAllByBatch(batch);
         return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
     @Transactional(readOnly = true)
-    public List<AuthenticationResponse> getStudentsByDay(String dayName) {
+    public List<StudentResponse> getStudentsByDay(String dayName) {
         Day day = dayRepository.findByDayName(dayName)
                 .orElseThrow(() -> new DayNotFoundException(dayName));
         List<User> users = userRepository.findAllByDay(day);
