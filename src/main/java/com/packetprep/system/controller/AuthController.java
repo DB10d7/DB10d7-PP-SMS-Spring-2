@@ -25,6 +25,12 @@ public class AuthController {
         return new ResponseEntity<>("User Registration Successful",
                 HttpStatus.OK);
     }
+    @PostMapping("/signupAdmin")
+    public ResponseEntity<String> signupAdmin(@RequestBody RegisterRequest registerRequest) {
+        authService.signupAdmin(registerRequest);
+        return new ResponseEntity<>("User Registration Successful",
+                HttpStatus.OK);
+    }
     @PutMapping("/update/{username}")
     public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest, @PathVariable String username) {
         authService.update(registerRequest, username);

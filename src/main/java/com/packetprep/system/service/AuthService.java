@@ -44,6 +44,25 @@ public class AuthService {
     private final BatchRepository batchRepository;
 
 
+    public void signupAdmin(RegisterRequest registerRequest) {
+        User user = new User();
+        Role role = roleRepository.findByRoleName(registerRequest.getRole())
+                .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
+        user.setUsername(registerRequest.getUsername());
+        user.setName(registerRequest.getName());
+        user.setEmail(registerRequest.getEmail());
+        user.setRole(role);
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setCreated(Instant.now());
+        user.setEnabled(true);
+        userRepository.save(user);
+
+        // String token = generateVerificationToken(user);
+      /*  iyvyyiyvivyiyiyivyliyliylyumailService.sendMail(new NotificationEmail("Please Activate your Account",
+                user.getEmail(), "Thank you for signing up to Spring Reddit, " +
+                "please click on the below url to activate your account : " +
+                "http://localhost:8080/api/auth/accountVerification/" + token));j9uh7j;9yujt6hmt,hiu.kuk */
+    }
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
         Role role = roleRepository.findByRoleName(registerRequest.getRole())
@@ -52,6 +71,7 @@ public class AuthService {
                 .orElseThrow(() -> new BatchNotFoundException(registerRequest.getBatch()));
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
+        user.setName(registerRequest.getName());
         user.setRole(role);
         user.setBatch(batch);
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
@@ -114,6 +134,7 @@ public class AuthService {
                 .username(refreshTokenRequest.getUsername())
                 .build();
     }
+
     public void update(RegisterRequest registerRequest, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
@@ -123,6 +144,7 @@ public class AuthService {
                 .orElseThrow(() -> new BatchNotFoundException(registerRequest.getBatch()));
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
+        user.setName(registerRequest.getName());
         user.setRole(role);
         user.setBatch(batch);
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
