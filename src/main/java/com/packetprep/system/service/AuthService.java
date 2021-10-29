@@ -4,13 +4,11 @@ import com.packetprep.system.Model.Batch;
 import com.packetprep.system.Model.Role;
 import com.packetprep.system.Model.User;
 import com.packetprep.system.Model.VerificationToken;
-import com.packetprep.system.dto.AuthenticationResponse;
-import com.packetprep.system.dto.LoginRequest;
-import com.packetprep.system.dto.RefreshTokenRequest;
-import com.packetprep.system.dto.RegisterRequest;
+import com.packetprep.system.dto.*;
 import com.packetprep.system.exception.BatchNotFoundException;
 import com.packetprep.system.exception.RoleNotFoundException;
 import com.packetprep.system.exception.SpringPPSystemException;
+import com.packetprep.system.mapper.StudentMapper;
 import com.packetprep.system.repository.BatchRepository;
 import com.packetprep.system.repository.RoleRepository;
 import com.packetprep.system.repository.UserRepository;
@@ -26,8 +24,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @AllArgsConstructor
@@ -42,6 +43,7 @@ public class AuthService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final RoleRepository roleRepository;
     private final BatchRepository batchRepository;
+    private final StudentMapper studentMapper;
 
 
     public void signupAdmin(RegisterRequest registerRequest) {
@@ -85,7 +87,11 @@ public class AuthService {
                 "please click on the below url to activate your account : " +
                 "http://localhost:8080/api/auth/accountVerification/" + token));j9uh7j;9yujt6hmt,hiu.kuk */
     }
-
+    @Transactional
+    public List<StudentResponse> showAllUser() {
+        List<User> students = userRepository.findAll();
+        return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+    }
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                 loginRequest.getPassword()));

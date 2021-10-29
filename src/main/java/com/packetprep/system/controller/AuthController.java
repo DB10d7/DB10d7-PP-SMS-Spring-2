@@ -1,9 +1,6 @@
 package com.packetprep.system.controller;
 
-import com.packetprep.system.dto.AuthenticationResponse;
-import com.packetprep.system.dto.LoginRequest;
-import com.packetprep.system.dto.RefreshTokenRequest;
-import com.packetprep.system.dto.RegisterRequest;
+import com.packetprep.system.dto.*;
 import com.packetprep.system.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
 
 import javax.validation.Valid;
+import java.util.List;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -36,6 +36,11 @@ public class AuthController {
         authService.update(registerRequest, username);
         return new ResponseEntity<>("User Update Successful",
                 HttpStatus.OK);
+    }
+    @GetMapping
+    public ResponseEntity<List<StudentResponse>> getAllUsers() {
+        return ResponseEntity.status(OK)
+                .body(authService.showAllUser());
     }
     @DeleteMapping("/delete/id")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {

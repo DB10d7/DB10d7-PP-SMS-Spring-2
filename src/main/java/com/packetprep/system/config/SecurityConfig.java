@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 //@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -56,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    @CrossOrigin(origins = "http://localhost:4200/")
     public void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.cors().and()
