@@ -43,8 +43,10 @@ public class StudentMapper {
     public StudentResponse mapFromStudentToDto(User user) {
         StudentResponse studentResponse = new StudentResponse();
         studentResponse.setUsername(user.getUsername());
+        studentResponse.setName(user.getName());
         studentResponse.setEmail(user.getEmail());
         studentResponse.setRole(user.getRole().getRoleName());
+   //     studentResponse.setBatch(user.getBatch().getName());
      //   studentResponse.setBatch(user.getBatch().getName());
         return studentResponse;
     }

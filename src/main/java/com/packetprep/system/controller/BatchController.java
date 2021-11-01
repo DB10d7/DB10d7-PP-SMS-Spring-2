@@ -49,12 +49,12 @@ public class BatchController {
                 .body(batchService.getAll());
     }
 
-    @GetMapping("/{id}")
+  /*  @GetMapping("/{id}")
     public ResponseEntity<BatchResponse> getBatch(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(batchService.getBatch(id));
-    }
+    } */
     @GetMapping("/{batchName}")
     public ResponseEntity<BatchResponse> getBatchByName(@PathVariable String batchName) {
         return ResponseEntity

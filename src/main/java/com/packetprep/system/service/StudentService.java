@@ -129,10 +129,10 @@ public class StudentService {
     }
     @Transactional(readOnly = true)
     public List<StudentResponse> getStudentsByDay(String dayName) {
-        Day day = dayRepository.findByDayName(dayName)
+        Day day = dayRepository.findByName(dayName)
                 .orElseThrow(() -> new DayNotFoundException(dayName));
-        List<User> users = userRepository.findAllByDay(day);
-        return users.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+        List<User> students = userRepository.findAllByDay(day);
+        return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
     @Transactional(readOnly = true)
     public List<DayResponse> getDaysByStudent(String studentName) {

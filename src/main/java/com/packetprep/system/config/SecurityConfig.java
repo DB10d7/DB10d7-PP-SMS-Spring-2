@@ -57,7 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    @CrossOrigin(origins = "http://localhost:4200/")
     public void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.cors().and()
@@ -67,13 +66,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/signupAdmin").permitAll()
                 .antMatchers("/api/auth/login").permitAll()
                 .antMatchers("/api/auth/refresh/token").authenticated()
-                .antMatchers(HttpMethod.GET,"/api/students/get/{username}").hasAnyAuthority("STUDENT","ADMIN","TRAINER","SUPER-ADMIN")
-                .antMatchers( HttpMethod.POST,"/api/batch/").hasAnyAuthority("TRAINER","SUPER-ADMIN")
+                .antMatchers( HttpMethod.POST,"/api/days/addStudent").permitAll()
+                .antMatchers( "/api/days/**").hasAnyAuthority("TRAINER","SUPER-ADMIN")
+                .antMatchers(HttpMethod.GET,"/api/students/**").hasAnyAuthority("STUDENT","ADMIN","TRAINER","SUPER-ADMIN")
+                .antMatchers( HttpMethod.GET,"/api/batch/{batchName}").hasAnyAuthority("TRAINER","SUPER-ADMIN")
+                .antMatchers( HttpMethod.GET,"/api/days/by-batch/{name}").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
+                .antMatchers("/api/batch/**").hasAnyAuthority("TRAINER","SUPER-ADMIN")
                 .antMatchers( HttpMethod.POST,"/api/days/**").hasAnyAuthority("TRAINER","SUPER-ADMIN")
-                .antMatchers( HttpMethod.PUT,"/api/days/**").hasAnyAuthority("TRAINER","SUPER-ADMIN")
                 .antMatchers( "/api/students/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
-                .antMatchers( HttpMethod.GET,"/api/batch/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
-                .antMatchers( HttpMethod.GET,"/api/days/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
                 .antMatchers( "/api/role/").hasAuthority("SUPER-ADMIN")
                 .antMatchers("/api/auth/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN");
         httpSecurity.addFilterBefore(jwtAuthenticationFilter,

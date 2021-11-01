@@ -24,7 +24,7 @@ public class Day {
     @GeneratedValue(strategy = IDENTITY)
     private Long dayId;
     @NotBlank(message = "Day Name cannot be empty or Null")
-    private String dayName;
+    private String name;
     @Nullable
     private String url;
     @Nullable

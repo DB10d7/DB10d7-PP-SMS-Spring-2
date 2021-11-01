@@ -14,7 +14,7 @@ public class DayMapper {
 
     public Day mapFromDtoToDay(DayRequest dayRequest, Batch batch, User user) {
         Day day = new Day();
-        day.setDayName(dayRequest.getDayName());
+        day.setName(dayRequest.getDayName());
         day.setUrl(dayRequest.getUrl());
         day.setCreatedBy(user);
         day.setDescription(dayRequest.getDescription());
@@ -30,7 +30,7 @@ public class DayMapper {
         dayResponse.setDescription(day.getDescription());
         dayResponse.setCreatedBy(day.getCreatedBy().getUsername());
         dayResponse.setBatchName(day.getBatch().getName());
-        dayResponse.setDayName(day.getDayName());
+        dayResponse.setDayName(day.getName());
         return dayResponse;
     }
 }

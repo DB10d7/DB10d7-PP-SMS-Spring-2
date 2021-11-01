@@ -40,15 +40,15 @@ public class DayService {
                         .orElseThrow(() -> new UsernameNotFoundException(dayRequest.getCreatedBy()) );
         dayRepository.save(dayMapper.mapFromDtoToDay(dayRequest, batch, user));
     }
-    @Transactional(readOnly = true)
+  /*  @Transactional(readOnly = true)
     public DayResponse getDay(Long id) {
         Day day = dayRepository.findById(id)
                 .orElseThrow(() -> new DayNotFoundException(id.toString()));
         return dayMapper.mapFromDayToDto(day);
-    }
+    } */
     @Transactional(readOnly = true)
     public DayResponse getDay(String dayName) {
-        Day day = dayRepository.findByDayName(dayName)
+        Day day = dayRepository.findByName(dayName)
                 .orElseThrow(() -> new DayNotFoundException(dayName));
         return dayMapper.mapFromDayToDto(day);
     }
@@ -78,7 +78,7 @@ public class DayService {
    public void addStudent(StudentDayMappingDto studentDayMappingDto){
         User student = userRepository.findByUsername(studentDayMappingDto.getStudentName())
                 .orElseThrow(() -> new UsernameNotFoundException(studentDayMappingDto.getStudentName()));
-        Day day = dayRepository.findByDayName(studentDayMappingDto.getDayName())
+        Day day = dayRepository.findByName(studentDayMappingDto.getDayName())
                 .orElseThrow(() -> new DayNotFoundException(studentDayMappingDto.getDayName()));
         day.getUser().add(student);
     }

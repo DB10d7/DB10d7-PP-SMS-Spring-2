@@ -27,7 +27,7 @@ public class DayController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/addStudent")
+    @PostMapping("/addStudent")
     public ResponseEntity<Void> addStudent(@RequestBody StudentDayMappingDto studentDayMappingDto) {
         dayService.addStudent(studentDayMappingDto);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -43,10 +43,10 @@ public class DayController {
         return status(HttpStatus.OK).body(dayService.getAllDays());
     }
 
-    @GetMapping("/{id}")
+  /*  @GetMapping("/{id}")
     public ResponseEntity<DayResponse> getDay(@PathVariable Long id) {
         return status(HttpStatus.OK).body(dayService.getDay(id));
-    }
+    } */
     @GetMapping("/{dayName}")
     public ResponseEntity<DayResponse> getDay(@PathVariable String dayName ) {
         return status(HttpStatus.OK).body(dayService.getDay(dayName));
