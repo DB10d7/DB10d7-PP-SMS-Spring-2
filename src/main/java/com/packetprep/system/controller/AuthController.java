@@ -63,6 +63,10 @@ public class AuthController {
     public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
         return authService.login(loginRequest);
     }
+    @PostMapping("/get/{Username}")
+    public StudentResponse getSingleUser(@PathVariable String Username) {
+        return authService.getSingleUser(Username);
+    }
     @PostMapping("/refresh/token")
     public AuthenticationResponse refreshTokens(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
         return authService.refreshToken(refreshTokenRequest);

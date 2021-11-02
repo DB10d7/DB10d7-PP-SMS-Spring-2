@@ -8,6 +8,7 @@ import com.packetprep.system.dto.*;
 import com.packetprep.system.exception.BatchNotFoundException;
 import com.packetprep.system.exception.RoleNotFoundException;
 import com.packetprep.system.exception.SpringPPSystemException;
+import com.packetprep.system.exception.StudentNotFoundException;
 import com.packetprep.system.mapper.StudentMapper;
 import com.packetprep.system.repository.BatchRepository;
 import com.packetprep.system.repository.RoleRepository;
@@ -97,12 +98,20 @@ public class AuthService {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
+        User user = userRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(loginRequest.getUsername()));
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
-               .refreshToken(refreshTokenService.generateRefreshToken().getToken())
+                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(loginRequest.getUsername())
+                .role(user.getRole().getRoleName())
                 .build();
+    }
+    @Transactional
+    public StudentResponse getSingleUser(String Username) {
+        User user = userRepository.findByUsername(Username).orElseThrow(() -> new StudentNotFoundException(Username));
+        return studentMapper.mapFromStudentToDto(user);
     }
     @Transactional(readOnly = true)
     public User getCurrentUser() {
