@@ -31,11 +31,12 @@ public class BatchController {
                 .body(batchService.save(batchRequest));
     }
     // New Updation
-  /*  @PostMapping("/update")
-    public ResponseEntity<BatchDto> updateBatch(@RequestBody BatchDto batchDto) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(batchService.save(batchDto));
-    } */
+   @PostMapping("/update")
+    public ResponseEntity<String> updateBatch(@RequestBody BatchRequest batchRequest, @PathVariable String batchName) {
+        batchService.update(batchRequest,batchName);
+       return new ResponseEntity<>("Batch Update Successful",
+               HttpStatus.OK);
+    }
     @GetMapping("/{batchName}/get/allStudents")
     public ResponseEntity<List<StudentResponse>> getAllStudentsByBatch(@PathVariable String batchName) {
         return ResponseEntity.status(OK)

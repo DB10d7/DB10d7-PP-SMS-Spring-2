@@ -32,7 +32,7 @@ public class AuthController {
                 HttpStatus.OK);
     }
     @PutMapping("/update/{username}")
-    public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest, @PathVariable String username) {
+    public ResponseEntity<String> update(@PathVariable String username, @RequestBody RegisterRequest registerRequest) {
         authService.update(registerRequest, username);
         return new ResponseEntity<>("User Update Successful",
                 HttpStatus.OK);
@@ -63,7 +63,7 @@ public class AuthController {
     public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
         return authService.login(loginRequest);
     }
-    @PostMapping("/get/{Username}")
+    @GetMapping("/get/{Username}")
     public StudentResponse getSingleUser(@PathVariable String Username) {
         return authService.getSingleUser(Username);
     }

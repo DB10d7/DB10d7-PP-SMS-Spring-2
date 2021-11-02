@@ -29,4 +29,14 @@ public class BatchesMapper {
         batchResponse.setCreatedBy(batch.getCreatedBy().getUsername());
         return batchResponse;
     }
+    public Batch updateFromDtoToBatch(BatchRequest batchRequest, User user) {
+        Batch batch = new Batch();
+        batch.setId(batchRequest.getId());
+        batch.setName(batchRequest.getName());
+        batch.setDescription(batchRequest.getDescription());
+        batch.setCreatedBy(user);
+        batch.setCreatedOn(Instant.now());
+        batch.setUpdatedOn(Instant.now());
+        return batch;
+    }
 }

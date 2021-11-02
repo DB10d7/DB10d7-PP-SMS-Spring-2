@@ -37,13 +37,14 @@ public class BatchService {
         return batchRequest;
     }
     // New Updation
-  /*  @Transactional
-    public BatchDto update(BatchDto batchDto){
-        Batch batch = batchRepository.findByName(batchDto.getName()).orElse(null);
-        batch.setDescription(batchDto.getDescription());
-        batch.se
-        return batchDto;
-    } */
+   @Transactional
+    public void update(BatchRequest batchRequest,String batchName){
+        Batch batch = batchRepository.findByName(batchName).orElseThrow(() -> new BatchNotFoundException(batchName));
+
+       User user = userRepository.findByUsername(batchRequest.getCreatedBy())
+               .orElseThrow(() -> new UsernameNotFoundException(batchRequest.getCreatedBy()) );
+       batchMapper.updateFromDtoToBatch(batchRequest,user);
+    }
 
     @Transactional(readOnly = true)
     public List<BatchResponse> getAll() {

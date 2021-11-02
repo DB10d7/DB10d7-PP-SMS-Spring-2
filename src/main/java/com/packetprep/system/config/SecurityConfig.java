@@ -66,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/signupAdmin").permitAll()
                 .antMatchers("/api/auth/login").permitAll()
                 .antMatchers("/api/auth/refresh/token").authenticated()
+                .antMatchers("/api/auth/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
                 .antMatchers( HttpMethod.POST,"/api/days/addStudent").permitAll()
                 .antMatchers( "/api/days/**").hasAnyAuthority("TRAINER","SUPER-ADMIN")
                 .antMatchers(HttpMethod.GET,"/api/students/**").hasAnyAuthority("STUDENT","ADMIN","TRAINER","SUPER-ADMIN")
@@ -74,8 +75,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/batch/**").hasAnyAuthority("TRAINER","SUPER-ADMIN")
                 .antMatchers( HttpMethod.POST,"/api/days/**").hasAnyAuthority("TRAINER","SUPER-ADMIN")
                 .antMatchers( "/api/students/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
-                .antMatchers( "/api/role/").hasAuthority("SUPER-ADMIN")
-                .antMatchers("/api/auth/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN");
+                .antMatchers( "/api/role/").hasAuthority("SUPER-ADMIN");
+
         httpSecurity.addFilterBefore(jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class);
 
