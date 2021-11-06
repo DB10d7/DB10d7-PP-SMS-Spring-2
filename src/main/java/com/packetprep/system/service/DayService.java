@@ -2,12 +2,11 @@ package com.packetprep.system.service;
 import com.packetprep.system.Model.Batch;
 import com.packetprep.system.Model.Day;
 import com.packetprep.system.Model.User;
-import com.packetprep.system.dto.DayRequest;
-import com.packetprep.system.dto.DayResponse;
-import com.packetprep.system.dto.StudentDayMappingDto;
+import com.packetprep.system.dto.*;
 import com.packetprep.system.exception.BatchNotFoundException;
 import com.packetprep.system.exception.DayNotFoundException;
 import com.packetprep.system.mapper.DayMapper;
+import com.packetprep.system.mapper.StudentMapper;
 import com.packetprep.system.repository.BatchRepository;
 import com.packetprep.system.repository.DayRepository;
 import com.packetprep.system.repository.UserRepository;
@@ -17,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -31,6 +31,7 @@ public class DayService {
     private final DayRepository dayRepository;
     private final DayMapper dayMapper;
     private final UserRepository userRepository;
+    private final StudentMapper studentMapper;
 
 
     public void save(DayRequest dayRequest) {
@@ -39,6 +40,15 @@ public class DayService {
         User user = userRepository.findByUsername(dayRequest.getCreatedBy())
                         .orElseThrow(() -> new UsernameNotFoundException(dayRequest.getCreatedBy()) );
         dayRepository.save(dayMapper.mapFromDtoToDay(dayRequest, batch, user));
+    }
+    public void update(DayRequest dayRequest) {
+        Day day = dayRepository.findByName(dayRequest.getDayName())
+                .orElseThrow(()-> new DayNotFoundException(dayRequest.getDayName()));
+        Batch batch = batchRepository.findByName(dayRequest.getBatchName())
+                .orElseThrow(() -> new BatchNotFoundException(dayRequest.getBatchName()));
+        User user = userRepository.findByUsername(dayRequest.getCreatedBy())
+                .orElseThrow(() -> new UsernameNotFoundException(dayRequest.getCreatedBy()) );
+        dayRepository.save(dayMapper.updateFromDtoToDay(dayRequest, batch, user,day));
     }
   /*  @Transactional(readOnly = true)
     public DayResponse getDay(Long id) {
@@ -75,11 +85,42 @@ public class DayService {
                 .map(dayMapper::mapFromDayToDto)
                 .collect(toList());
     }
+    public List<StudentResponse> studentsNotPresent(BatchDayRequestDto batchDayRequestDto){
+        Batch batch = batchRepository.findByName(batchDayRequestDto.getBatchName())
+                .orElseThrow(() -> new BatchNotFoundException(batchDayRequestDto.getBatchName()));
+        List<User> studentsList1 = userRepository.findAllByBatch(batch);
+      //  studentsList1.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+        Day day = dayRepository.findByName(batchDayRequestDto.getDayName())
+                .orElseThrow(() -> new DayNotFoundException(batchDayRequestDto.getDayName()));
+        List<User> studentsList2 = userRepository.findAllByDay(day);
+        List<User> students= new ArrayList<>();
+        Boolean present= false;
+      //  students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+        for(User batchStudent: studentsList1){
+            for(User dayStudent: studentsList2){
+                if(batchStudent.getUserId() == dayStudent.getUserId()){
+                    present=true;
+                    break;
+                }
+            }
+            if(present == false){
+                students.add(batchStudent);
+            }
+        }
+        return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+    }
    public void addStudent(StudentDayMappingDto studentDayMappingDto){
         User student = userRepository.findByUsername(studentDayMappingDto.getStudentName())
                 .orElseThrow(() -> new UsernameNotFoundException(studentDayMappingDto.getStudentName()));
         Day day = dayRepository.findByName(studentDayMappingDto.getDayName())
                 .orElseThrow(() -> new DayNotFoundException(studentDayMappingDto.getDayName()));
         day.getUser().add(student);
+    }
+    public void removeStudent(StudentDayMappingDto studentDayMappingDto){
+        User student = userRepository.findByUsername(studentDayMappingDto.getStudentName())
+                .orElseThrow(() -> new UsernameNotFoundException(studentDayMappingDto.getStudentName()));
+        Day day = dayRepository.findByName(studentDayMappingDto.getDayName())
+                .orElseThrow(() -> new DayNotFoundException(studentDayMappingDto.getDayName()));
+        day.getUser().remove(student);
     }
 }

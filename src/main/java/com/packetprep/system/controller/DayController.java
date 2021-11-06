@@ -26,16 +26,30 @@ public class DayController {
         dayService.save(dayRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+    @PutMapping("/update/{dayName}")
+    public ResponseEntity<Void> updateDay(@RequestBody DayRequest dayRequest) {
+        dayService.update(dayRequest);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
     @PostMapping("/addStudent")
     public ResponseEntity<Void> addStudent(@RequestBody StudentDayMappingDto studentDayMappingDto) {
         dayService.addStudent(studentDayMappingDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @PostMapping("/removeStudent")
+    public ResponseEntity<String> removeStudent(@RequestBody StudentDayMappingDto studentDayMappingDto) {
+        dayService.removeStudent(studentDayMappingDto);
+        return new ResponseEntity<>("Student Deleted Successful",HttpStatus.OK);
+    }
     @GetMapping("/{dayName}/get/allStudents")
     public ResponseEntity<List<StudentResponse>> getAllStudentsByDay(@PathVariable String dayName){
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByDay(dayName));
+    }
+    @GetMapping("/studentsNotPresent")
+    public ResponseEntity<List<StudentResponse>> studentsNotPresent(@RequestBody BatchDayRequestDto batchDayRequestDto){
+        return ResponseEntity.status(OK)
+                .body(dayService.studentsNotPresent(batchDayRequestDto));
     }
 
     @GetMapping

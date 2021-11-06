@@ -33,4 +33,15 @@ public class DayMapper {
         dayResponse.setDayName(day.getName());
         return dayResponse;
     }
+    public Day updateFromDtoToDay(DayRequest dayRequest, Batch batch, User user,Day day) {
+
+        day.setName(dayRequest.getDayName());
+        day.setUrl(dayRequest.getUrl());
+        day.setCreatedBy(user);
+        day.setDescription(dayRequest.getDescription());
+        day.setBatch(batch);
+        //day.setCreatedOn(Instant.now());
+        day.setUpdatedOn(Instant.now());
+        return day;
+    }
 }

@@ -115,6 +115,7 @@ public class StudentService {
         List<User> students = userRepository.findAll();
         return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
+
     @Transactional
     public StudentResponse readSingleStudent(String studentName) {
         User student = userRepository.findByUsername(studentName).orElseThrow(() -> new StudentNotFoundException(studentName));

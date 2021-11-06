@@ -25,15 +25,16 @@ public class BatchController {
     private final BatchService batchService;
     private final StudentService studentService;
 
-    @PostMapping
-    public ResponseEntity<BatchRequest> createBatch(@RequestBody BatchRequest batchRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(batchService.save(batchRequest));
+    @PostMapping("/create")
+    public ResponseEntity<String> createBatch(@RequestBody BatchRequest batchRequest) {
+        batchService.save(batchRequest);
+        return new ResponseEntity<>("Batch Registration Successful",
+                HttpStatus.OK);
     }
     // New Updation
-   @PostMapping("/update")
-    public ResponseEntity<String> updateBatch(@RequestBody BatchRequest batchRequest, @PathVariable String batchName) {
-        batchService.update(batchRequest,batchName);
+   @PutMapping("/update/{batchName}")
+    public ResponseEntity<String> updateBatch(@RequestBody BatchRequest batchRequest) {
+        batchService.update(batchRequest);
        return new ResponseEntity<>("Batch Update Successful",
                HttpStatus.OK);
     }

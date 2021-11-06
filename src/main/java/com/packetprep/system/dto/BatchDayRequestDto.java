@@ -8,11 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StudentResponse {
-    private String username;
-    private String name;
-    private String email;
-    private String password;
-    private String batch;
-    private String role;
+public class BatchDayRequestDto {
+    private String batchName;
+    private String dayName;
 }

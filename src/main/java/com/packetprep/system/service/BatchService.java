@@ -29,21 +29,20 @@ public class BatchService {
     private final UserRepository userRepository;
 
     @Transactional
-    public BatchRequest save(BatchRequest batchRequest) {
+    public void save(BatchRequest batchRequest) {
         User user = userRepository.findByUsername(batchRequest.getCreatedBy())
                 .orElseThrow(() -> new UsernameNotFoundException(batchRequest.getCreatedBy()) );
         Batch batch = batchRepository.save(batchMapper.mapFromDtoToBatch(batchRequest, user));
-        batchRequest.setId(batch.getId());
-        return batchRequest;
     }
     // New Updation
    @Transactional
-    public void update(BatchRequest batchRequest,String batchName){
-        Batch batch = batchRepository.findByName(batchName).orElseThrow(() -> new BatchNotFoundException(batchName));
+    public void update(BatchRequest batchRequest){
+
+        Batch batch = batchRepository.findByName(batchRequest.getName()).orElseThrow(() -> new BatchNotFoundException(batchRequest.getName()));
 
        User user = userRepository.findByUsername(batchRequest.getCreatedBy())
                .orElseThrow(() -> new UsernameNotFoundException(batchRequest.getCreatedBy()) );
-       batchMapper.updateFromDtoToBatch(batchRequest,user);
+       batchMapper.updateFromDtoToBatch(batchRequest,user,batch);
     }
 
     @Transactional(readOnly = true)

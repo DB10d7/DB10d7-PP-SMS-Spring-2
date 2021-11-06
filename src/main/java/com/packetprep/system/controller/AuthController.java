@@ -32,8 +32,8 @@ public class AuthController {
                 HttpStatus.OK);
     }
     @PutMapping("/update/{username}")
-    public ResponseEntity<String> update(@PathVariable String username, @RequestBody RegisterRequest registerRequest) {
-        authService.update(registerRequest, username);
+    public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest) {
+        authService.update(registerRequest);
         return new ResponseEntity<>("User Update Successful",
                 HttpStatus.OK);
     }

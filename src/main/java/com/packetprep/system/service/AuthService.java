@@ -150,9 +150,9 @@ public class AuthService {
                 .build();
     }
 
-    public void update(RegisterRequest registerRequest, String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+    public void update(RegisterRequest registerRequest) {
+        User user = userRepository.findByUsername(registerRequest.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(registerRequest.getUsername()));
         Role role = roleRepository.findByRoleName(registerRequest.getRole())
                 .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
         Batch batch = batchRepository.findByName(registerRequest.getBatch())
@@ -162,7 +162,8 @@ public class AuthService {
         user.setName(registerRequest.getName());
         user.setRole(role);
         user.setBatch(batch);
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+       // user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setPassword(registerRequest.getPassword());
         user.setCreated(Instant.now());
         user.setEnabled(true);
         userRepository.save(user);
