@@ -22,9 +22,8 @@ public class DayController {
     private final StudentService studentService;
 
     @PostMapping
-    public ResponseEntity<Void> createDay(@RequestBody DayRequest dayRequest) {
-        dayService.save(dayRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<String> createDay(@RequestBody DayRequest dayRequest) {
+        return new ResponseEntity<>(dayService.save(dayRequest),HttpStatus.CREATED);
     }
     @PutMapping("/update/{dayName}")
     public ResponseEntity<Void> updateDay(@RequestBody DayRequest dayRequest) {
@@ -46,7 +45,7 @@ public class DayController {
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByDay(dayName));
     }
-    @GetMapping("/studentsNotPresent")
+    @PostMapping("/studentsNotPresent")
     public ResponseEntity<List<StudentResponse>> studentsNotPresent(@RequestBody BatchDayRequestDto batchDayRequestDto){
         return ResponseEntity.status(OK)
                 .body(dayService.studentsNotPresent(batchDayRequestDto));

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,7 +113,13 @@ public class StudentService {
        } */
     @Transactional
     public List<StudentResponse> showAllStudent() {
-        List<User> students = userRepository.findAll();
+        List<User> users = userRepository.findAll();
+        List<User> students = new ArrayList<>();
+        for(User student: users){
+            if(student.getRole().getRoleName().equalsIgnoreCase("STUDENT")){
+                students.add(student);
+            }
+        }
         return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
 

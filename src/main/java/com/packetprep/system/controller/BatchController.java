@@ -27,8 +27,7 @@ public class BatchController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createBatch(@RequestBody BatchRequest batchRequest) {
-        batchService.save(batchRequest);
-        return new ResponseEntity<>("Batch Registration Successful",
+        return new ResponseEntity<>(batchService.save(batchRequest),
                 HttpStatus.OK);
     }
     // New Updation

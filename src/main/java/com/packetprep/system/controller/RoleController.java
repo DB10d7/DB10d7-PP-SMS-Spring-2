@@ -22,9 +22,8 @@ public class RoleController {
     private final RoleService roleService;
 
     @PostMapping
-    public ResponseEntity<Void> createRole(@RequestBody RoleDto roleDto) {
-        roleService.save(roleDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<String> createRole(@RequestBody RoleDto roleDto) {
+        return new ResponseEntity<>(roleService.save(roleDto),HttpStatus.CREATED);
     }
 
     @GetMapping

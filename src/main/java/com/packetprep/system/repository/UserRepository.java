@@ -21,5 +21,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByDay(Day day);
 
     List<User> findAllByBatch(Batch batch);
+
+    @Override
+    void deleteById(Long id);
 }
 

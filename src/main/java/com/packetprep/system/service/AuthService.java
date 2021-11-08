@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,21 +67,31 @@ public class AuthService {
                 "please click on the below url to activate your account : " +
                 "http://localhost:8080/api/auth/accountVerification/" + token));j9uh7j;9yujt6hmt,hiu.kuk */
     }
-    public void signup(RegisterRequest registerRequest) {
+    public String signup(RegisterRequest registerRequest) {
         User user = new User();
-        Role role = roleRepository.findByRoleName(registerRequest.getRole())
-                .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
-        Batch batch = batchRepository.findByName(registerRequest.getBatch())
-                .orElseThrow(() -> new BatchNotFoundException(registerRequest.getBatch()));
-        user.setUsername(registerRequest.getUsername());
-        user.setEmail(registerRequest.getEmail());
-        user.setName(registerRequest.getName());
-        user.setRole(role);
-        user.setBatch(batch);
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setCreated(Instant.now());
-        user.setEnabled(true);
-        userRepository.save(user);
+        try{
+            User prevUser = userRepository.findByUsername(registerRequest.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException(registerRequest.getUsername()));
+            return "UserName Already Taken";
+        }catch (Exception UsernameNotFoundException){
+            Role role = roleRepository.findByRoleName(registerRequest.getRole())
+                    .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
+            Batch batch = batchRepository.findByName(registerRequest.getBatch())
+                    .orElseThrow(() -> new BatchNotFoundException(registerRequest.getBatch()));
+            user.setUsername(registerRequest.getUsername());
+            user.setEmail(registerRequest.getEmail());
+            user.setName(registerRequest.getName());
+            user.setRole(role);
+            user.setBatch(batch);
+            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+            user.setCreated(Instant.now());
+            user.setEnabled(true);
+            userRepository.save(user);
+            return "User Registered Successfully";
+        }
+
+
+
 
        // String token = generateVerificationToken(user);
       /*  iyvyyiyvivyiyiyivyliyliylyumailService.sendMail(new NotificationEmail("Please Activate your Account",
@@ -92,6 +103,17 @@ public class AuthService {
     public List<StudentResponse> showAllUser() {
         List<User> students = userRepository.findAll();
         return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+    }
+    @Transactional
+    public List<StudentResponse> showOfficeEmployee() {
+        List<User> users = userRepository.findAll();
+        List<User> officeEmployee = new ArrayList<>();
+        for(User employee: users){
+            if(employee.getRole().getRoleName().equalsIgnoreCase("DEFAULT")){
+                officeEmployee.add(employee);
+            }
+        }
+        return officeEmployee.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),

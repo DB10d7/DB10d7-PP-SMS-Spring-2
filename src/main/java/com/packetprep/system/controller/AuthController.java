@@ -21,8 +21,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest) {
-        authService.signup(registerRequest);
-        return new ResponseEntity<>("User Registration Successful",
+        return new ResponseEntity<>(authService.signup(registerRequest),
                 HttpStatus.OK);
     }
     @PostMapping("/signupAdmin")
@@ -42,7 +41,7 @@ public class AuthController {
         return ResponseEntity.status(OK)
                 .body(authService.showAllUser());
     }
-    @DeleteMapping("/delete/id")
+    @GetMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         authService.deleteById(id);
         return new ResponseEntity<>("User Successfully Deleted",
@@ -70,5 +69,10 @@ public class AuthController {
     @PostMapping("/refresh/token")
     public AuthenticationResponse refreshTokens(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
         return authService.refreshToken(refreshTokenRequest);
+    }
+    @GetMapping("/get/officeEmployees")
+    public ResponseEntity<List<StudentResponse>> getOfficeMember() {
+        return ResponseEntity.status(OK)
+                .body(authService.showOfficeEmployee());
     }
 }

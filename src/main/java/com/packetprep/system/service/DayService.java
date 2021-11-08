@@ -34,12 +34,20 @@ public class DayService {
     private final StudentMapper studentMapper;
 
 
-    public void save(DayRequest dayRequest) {
+    public String save(DayRequest dayRequest) {
         Batch batch = batchRepository.findByName(dayRequest.getBatchName())
                 .orElseThrow(() -> new BatchNotFoundException(dayRequest.getBatchName()));
         User user = userRepository.findByUsername(dayRequest.getCreatedBy())
                         .orElseThrow(() -> new UsernameNotFoundException(dayRequest.getCreatedBy()) );
-        dayRepository.save(dayMapper.mapFromDtoToDay(dayRequest, batch, user));
+        try{
+            Day day = dayRepository.findByName(dayRequest.getDayName())
+                    .orElseThrow(()-> new DayNotFoundException(dayRequest.getDayName()));
+            return "Day Already Created";
+        }catch (Exception DayNotFoundException){
+            dayRepository.save(dayMapper.mapFromDtoToDay(dayRequest, batch, user));
+            return "Day Successfully Created";
+        }
+
     }
     public void update(DayRequest dayRequest) {
         Day day = dayRepository.findByName(dayRequest.getDayName())
