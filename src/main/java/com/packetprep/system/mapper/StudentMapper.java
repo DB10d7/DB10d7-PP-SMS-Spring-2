@@ -47,7 +47,7 @@ public class StudentMapper {
         studentResponse.setEmail(user.getEmail());
         studentResponse.setRole(user.getRole().getRoleName());
         studentResponse.setPassword(user.getPassword());
-   //     studentResponse.setBatch(user.getBatch().getName());
+        studentResponse.setBatch(user.getBatch().getName());
      //   studentResponse.setBatch(user.getBatch().getName());
         return studentResponse;
     }

@@ -23,7 +23,7 @@ public class DayController {
 
     @PostMapping
     public ResponseEntity<String> createDay(@RequestBody DayRequest dayRequest) {
-        return new ResponseEntity<>(dayService.save(dayRequest),HttpStatus.CREATED);
+        return new ResponseEntity<>(dayService.save(dayRequest), HttpStatus.OK);
     }
     @PutMapping("/update/{dayName}")
     public ResponseEntity<Void> updateDay(@RequestBody DayRequest dayRequest) {

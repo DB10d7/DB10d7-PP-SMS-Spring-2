@@ -108,12 +108,12 @@ public class DayService {
             for(User dayStudent: studentsList2){
                 if(batchStudent.getUserId() == dayStudent.getUserId()){
                     present=true;
-                    break;
                 }
             }
             if(present == false){
                 students.add(batchStudent);
             }
+            present=false;
         }
         return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
