@@ -75,4 +75,9 @@ public class AuthController {
         return ResponseEntity.status(OK)
                 .body(authService.showOfficeEmployee());
     }
+    @GetMapping("/get/defaultRoleUsers")
+    public ResponseEntity<List<StudentResponse>> getDefaultRoleUsers() {
+        return ResponseEntity.status(OK)
+                .body(authService.getDefaultRoleUsers());
+    }
 }

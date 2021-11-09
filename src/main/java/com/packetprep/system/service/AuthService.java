@@ -115,6 +115,17 @@ public class AuthService {
         }
         return officeEmployee.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
+    @Transactional
+    public List<StudentResponse> getDefaultRoleUsers() {
+        List<User> users = userRepository.findAll();
+        List<User> officeEmployee = new ArrayList<>();
+        for(User employee: users){
+            if(employee.getRole().getRoleName().equalsIgnoreCase("DEFAULT")){
+                officeEmployee.add(employee);
+            }
+        }
+        return officeEmployee.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+    }
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                 loginRequest.getPassword()));
