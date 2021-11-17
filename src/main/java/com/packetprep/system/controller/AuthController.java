@@ -36,10 +36,16 @@ public class AuthController {
         return new ResponseEntity<>("User Update Successful",
                 HttpStatus.OK);
     }
+
     @GetMapping
     public ResponseEntity<List<StudentResponse>> getAllUsers() {
         return ResponseEntity.status(OK)
                 .body(authService.showAllUser());
+    }
+    @GetMapping("/get/employees")
+    public ResponseEntity<List<StudentResponse>> getAllEmployees() {
+        return ResponseEntity.status(OK)
+                .body(authService.getAllEmployees());
     }
     @GetMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
@@ -55,6 +61,7 @@ public class AuthController {
     }
     @GetMapping("accountVerification/{token}")
     public ResponseEntity<String> verifyAccount(@PathVariable String token) {
+        System.out.print(token);
         authService.verifyAccount(token);
         return new ResponseEntity<>("Account Activated Successfully", HttpStatus.OK);
     }
@@ -65,6 +72,10 @@ public class AuthController {
     @GetMapping("/get/{Username}")
     public StudentResponse getSingleUser(@PathVariable String Username) {
         return authService.getSingleUser(Username);
+    }
+    @GetMapping("/get/currentUser")
+    public StudentResponse getCurrentUser() {
+        return authService.getCurrentUser();
     }
     @PostMapping("/refresh/token")
     public AuthenticationResponse refreshTokens(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {

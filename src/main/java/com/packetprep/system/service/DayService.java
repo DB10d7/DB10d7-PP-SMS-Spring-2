@@ -84,6 +84,7 @@ public class DayService {
         List<Day> days = dayRepository.findAllByBatch(batch);
         return days.stream().map(dayMapper::mapFromDayToDto).collect(toList());
     }
+
     @Transactional(readOnly = true)
     public List<DayResponse> getDaysByUsername(String username) {
         User user = userRepository.findByUsername(username)

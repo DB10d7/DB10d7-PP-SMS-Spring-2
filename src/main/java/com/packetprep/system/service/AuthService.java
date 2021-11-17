@@ -1,9 +1,6 @@
 package com.packetprep.system.service;
 
-import com.packetprep.system.Model.Batch;
-import com.packetprep.system.Model.Role;
-import com.packetprep.system.Model.User;
-import com.packetprep.system.Model.VerificationToken;
+import com.packetprep.system.Model.*;
 import com.packetprep.system.dto.*;
 import com.packetprep.system.exception.BatchNotFoundException;
 import com.packetprep.system.exception.RoleNotFoundException;
@@ -46,6 +43,7 @@ public class AuthService {
     private final RoleRepository roleRepository;
     private final BatchRepository batchRepository;
     private final StudentMapper studentMapper;
+    private final MailService mailService;
 
 
     public void signupAdmin(RegisterRequest registerRequest) {
@@ -62,10 +60,10 @@ public class AuthService {
         userRepository.save(user);
 
         // String token = generateVerificationToken(user);
-      /*  iyvyyiyvivyiyiyivyliyliylyumailService.sendMail(new NotificationEmail("Please Activate your Account",
+      /*  mailService.sendMail(new NotificationEmail("Please Activate your Account",
                 user.getEmail(), "Thank you for signing up to Spring Reddit, " +
                 "please click on the below url to activate your account : " +
-                "http://localhost:8080/api/auth/accountVerification/" + token));j9uh7j;9yujt6hmt,hiu.kuk */
+                "http://localhost:8080/api/auth/accountVerification/" + token)); */
     }
     public String signup(RegisterRequest registerRequest) {
         User user = new User();
@@ -73,7 +71,7 @@ public class AuthService {
             User prevUser = userRepository.findByUsername(registerRequest.getUsername())
                     .orElseThrow(() -> new UsernameNotFoundException(registerRequest.getUsername()));
             return "UserName Already Taken";
-        }catch (Exception UsernameNotFoundException){
+        }catch (Exception UsernameNotFoundException) {
             Role role = roleRepository.findByRoleName(registerRequest.getRole())
                     .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
             Batch batch = batchRepository.findByName(registerRequest.getBatch())
@@ -85,24 +83,31 @@ public class AuthService {
             user.setBatch(batch);
             user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             user.setCreated(Instant.now());
-            user.setEnabled(true);
+         //   user.setEnabled(true);
             userRepository.save(user);
+            String token = generateVerificationToken(user);
+            mailService.sendMail(new NotificationEmail("Please Activate your Account",
+                    user.getEmail(), "Thank you for signing up to Packet-Prep, " +
+                    "please click on the below url to activate your account : " +
+                    "http://localhost:4200/account-activation/" + token));
             return "User Registered Successfully";
         }
-
-
-
-
-       // String token = generateVerificationToken(user);
-      /*  iyvyyiyvivyiyiyivyliyliylyumailService.sendMail(new NotificationEmail("Please Activate your Account",
-                user.getEmail(), "Thank you for signing up to Spring Reddit, " +
-                "please click on the below url to activate your account : " +
-                "http://localhost:8080/api/auth/accountVerification/" + token));j9uh7j;9yujt6hmt,hiu.kuk */
     }
     @Transactional
     public List<StudentResponse> showAllUser() {
         List<User> students = userRepository.findAll();
         return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+    }
+    @Transactional
+    public List<StudentResponse> getAllEmployees() {
+        List<User> users = userRepository.findAll();
+        List<User> employees = new ArrayList<>();
+        for(User employee: users){
+            if((employee.getBatch().getName().equalsIgnoreCase("PacketPrep-Team")) && ((!employee.getRole().getRoleName().equalsIgnoreCase("STUDENT") && (!employee.getRole().getRoleName().equalsIgnoreCase("DEFAULT")) ))){
+                employees.add(employee);
+            }
+        }
+        return employees.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
     @Transactional
     public List<StudentResponse> showOfficeEmployee() {
@@ -147,11 +152,12 @@ public class AuthService {
         return studentMapper.mapFromStudentToDto(user);
     }
     @Transactional(readOnly = true)
-    public User getCurrentUser() {
+    public StudentResponse getCurrentUser() {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.
                 getContext().getAuthentication().getPrincipal();
-        return userRepository.findByUsername(principal.getUsername())
+        User user= userRepository.findByUsername(principal.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + principal.getUsername()));
+        return studentMapper.mapFromStudentToDto(user);
     }
     public void verifyAccount(String token) {
         Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
@@ -159,7 +165,8 @@ public class AuthService {
     }
     private void fetchUserAndEnable(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new SpringPPSystemException("User not found with name - " + username));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with name - " + username));
+        System.out.println(user);
         user.setEnabled(true);
         userRepository.save(user);
     }
@@ -202,6 +209,7 @@ public class AuthService {
         userRepository.save(user);
 
     }
+
     public void delete( String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
