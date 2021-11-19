@@ -66,6 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/signupAdmin").permitAll()
                 .antMatchers("/api/auth/login").permitAll()
                 .antMatchers("/api/auth/accountVerification/{token}").permitAll()
+                .antMatchers("/api/auth/forgotPassword/{username}").permitAll()
+                .antMatchers("/api/auth/resetPassword").permitAll()
                 .antMatchers("/api/auth/refresh/token").authenticated()
                 .antMatchers("/api/auth/get/currentUser").authenticated()
                 .antMatchers(HttpMethod.DELETE,"/api/auth/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")

@@ -7,10 +7,7 @@ import com.packetprep.system.exception.RoleNotFoundException;
 import com.packetprep.system.exception.SpringPPSystemException;
 import com.packetprep.system.exception.StudentNotFoundException;
 import com.packetprep.system.mapper.StudentMapper;
-import com.packetprep.system.repository.BatchRepository;
-import com.packetprep.system.repository.RoleRepository;
-import com.packetprep.system.repository.UserRepository;
-import com.packetprep.system.repository.VerificationTokenRepository;
+import com.packetprep.system.repository.*;
 import com.packetprep.system.security.JwtProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,6 +37,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RefreshTokenService refreshTokenService;
     private final VerificationTokenRepository verificationTokenRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final RoleRepository roleRepository;
     private final BatchRepository batchRepository;
     private final StudentMapper studentMapper;
@@ -83,7 +81,7 @@ public class AuthService {
             user.setBatch(batch);
             user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             user.setCreated(Instant.now());
-         //   user.setEnabled(true);
+            user.setEnabled(false);
             userRepository.save(user);
             String token = generateVerificationToken(user);
             mailService.sendMail(new NotificationEmail("Please Activate your Account",
@@ -166,7 +164,7 @@ public class AuthService {
     private void fetchUserAndEnable(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with name - " + username));
-        System.out.println(user);
+       // System.out.println(user);
         user.setEnabled(true);
         userRepository.save(user);
     }
@@ -177,6 +175,15 @@ public class AuthService {
         verificationToken.setUser(user);
 
         verificationTokenRepository.save(verificationToken);
+        return token;
+    }
+    private String generatePasswordResetToken(User user) {
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        passwordResetToken.setToken(token);
+        passwordResetToken.setUser(user);
+
+        passwordResetTokenRepository.save(passwordResetToken);
         return token;
     }
     public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
@@ -219,5 +226,25 @@ public class AuthService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found - "));
         userRepository.deleteById(id);
+    }
+    public void verifyUserForPasswordReset(ForgotPasswordRequest forgotPasswordRequest){
+        Optional<PasswordResetToken> passwordResetToken = passwordResetTokenRepository.findByToken(forgotPasswordRequest.getToken());
+        fetchUserAndResetPassword(passwordResetToken.orElseThrow(() -> new SpringPPSystemException("Invalid Token")), forgotPasswordRequest.getPassword());
+    }
+    private void fetchUserAndResetPassword(PasswordResetToken passwordResetToken, String password) {
+        String username = passwordResetToken.getUser().getUsername();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with name - " + username));
+        // System.out.println(user);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+    public void forgotPassword(String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+        String token = generatePasswordResetToken(user);
+        mailService.sendMail(new NotificationEmail("Please Reset your Password",
+                user.getEmail(), "Thank you for signing up to Packet-Prep, " +
+                "please click on the below url to reset your password : " +
+                "http://localhost:4200/reset-Password/" + token));
     }
 }

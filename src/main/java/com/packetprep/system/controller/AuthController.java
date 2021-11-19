@@ -59,12 +59,22 @@ public class AuthController {
         return new ResponseEntity<>("User Successfully Deleted",
                 HttpStatus.OK);
     }
-    @GetMapping("accountVerification/{token}")
+    @GetMapping("/accountVerification/{token}")
     public ResponseEntity<String> verifyAccount(@PathVariable String token) {
-        System.out.print(token);
         authService.verifyAccount(token);
         return new ResponseEntity<>("Account Activated Successfully", HttpStatus.OK);
     }
+    @PostMapping("/resetPassword")
+    public ResponseEntity<String> verifyUserForResetPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+        authService.verifyUserForPasswordReset(forgotPasswordRequest);
+        return new ResponseEntity<>("Password Reset Successful", HttpStatus.OK);
+    }
+    @GetMapping("/forgotPassword/{username}")
+    public ResponseEntity<String> forgotPassword(@PathVariable String username) {
+        authService.forgotPassword(username);
+        return new ResponseEntity<>("Password Reset Applied Successfully", HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
         return authService.login(loginRequest);
