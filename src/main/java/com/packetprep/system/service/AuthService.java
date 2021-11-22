@@ -227,9 +227,15 @@ public class AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found - "));
         userRepository.deleteById(id);
     }
-    public void verifyUserForPasswordReset(ForgotPasswordRequest forgotPasswordRequest){
-        Optional<PasswordResetToken> passwordResetToken = passwordResetTokenRepository.findByToken(forgotPasswordRequest.getToken());
-        fetchUserAndResetPassword(passwordResetToken.orElseThrow(() -> new SpringPPSystemException("Invalid Token")), forgotPasswordRequest.getPassword());
+    public String verifyUserForPasswordReset(ForgotPasswordRequest forgotPasswordRequest){
+        try{
+            Optional<PasswordResetToken> passwordResetToken = passwordResetTokenRepository.findByToken(forgotPasswordRequest.getToken());
+            fetchUserAndResetPassword(passwordResetToken.orElseThrow(() -> new SpringPPSystemException("Invalid Token")), forgotPasswordRequest.getPassword());
+            return "Reset-Password Successful";
+        }catch(Exception SpringPPSystemException){
+            return "Reset-Password Un-Successful! Please provide valid token to reset your password";
+        }
+
     }
     private void fetchUserAndResetPassword(PasswordResetToken passwordResetToken, String password) {
         String username = passwordResetToken.getUser().getUsername();
@@ -238,13 +244,19 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
     }
-    public void forgotPassword(String username){
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
-        String token = generatePasswordResetToken(user);
-        mailService.sendMail(new NotificationEmail("Please Reset your Password",
-                user.getEmail(), "Thank you for signing up to Packet-Prep, " +
-                "please click on the below url to reset your password : " +
-                "http://localhost:4200/reset-Password/" + token));
+    public String forgotPassword(String username){
+        try{
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException(username));
+            String token = generatePasswordResetToken(user);
+            mailService.sendMail(new NotificationEmail("Please Reset your Password",
+                    user.getEmail(), "Thank you for signing up to Packet-Prep, " +
+                    "please click on the below url to reset your password : " +
+                    "http://localhost:4200/reset-Password/" + token));
+            return "Reset-Password link successfully sent to your registered email address";
+        }catch(Exception UsernameNotFoundException){
+            return "UserName not registered with US. Please verify the username";
+        }
+
     }
 }

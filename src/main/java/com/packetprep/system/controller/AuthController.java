@@ -66,13 +66,11 @@ public class AuthController {
     }
     @PostMapping("/resetPassword")
     public ResponseEntity<String> verifyUserForResetPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) {
-        authService.verifyUserForPasswordReset(forgotPasswordRequest);
-        return new ResponseEntity<>("Password Reset Successful", HttpStatus.OK);
+        return new ResponseEntity<>(authService.verifyUserForPasswordReset(forgotPasswordRequest), HttpStatus.OK);
     }
     @GetMapping("/forgotPassword/{username}")
     public ResponseEntity<String> forgotPassword(@PathVariable String username) {
-        authService.forgotPassword(username);
-        return new ResponseEntity<>("Password Reset Applied Successfully", HttpStatus.OK);
+        return new ResponseEntity<>(authService.forgotPassword(username),HttpStatus.OK);
     }
 
     @PostMapping("/login")
