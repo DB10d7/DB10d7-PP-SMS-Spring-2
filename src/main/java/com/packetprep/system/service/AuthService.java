@@ -119,6 +119,17 @@ public class AuthService {
         return officeEmployee.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
     @Transactional
+    public List<StudentResponse> showTrainers() {
+        List<User> users = userRepository.findAll();
+        List<User> trainers = new ArrayList<>();
+        for(User trainer: users){
+            if(trainer.getRole().getRoleName().equalsIgnoreCase("TRAINER")){
+                trainers.add(trainer);
+            }
+        }
+        return trainers.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+    }
+    @Transactional
     public List<StudentResponse> getDefaultRoleUsers() {
         List<User> users = userRepository.findAll();
         List<User> officeEmployee = new ArrayList<>();

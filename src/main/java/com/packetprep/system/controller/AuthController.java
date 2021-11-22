@@ -94,6 +94,11 @@ public class AuthController {
         return ResponseEntity.status(OK)
                 .body(authService.showOfficeEmployee());
     }
+    @GetMapping("/get/trainersList")
+    public ResponseEntity<List<StudentResponse>> getTrainers() {
+        return ResponseEntity.status(OK)
+                .body(authService.showTrainers());
+    }
     @GetMapping("/get/defaultRoleUsers")
     public ResponseEntity<List<StudentResponse>> getDefaultRoleUsers() {
         return ResponseEntity.status(OK)
