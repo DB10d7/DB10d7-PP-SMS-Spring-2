@@ -2,6 +2,7 @@ package com.packetprep.system.controller;
 
 import com.packetprep.system.dto.*;
 import com.packetprep.system.service.AuthService;
+import com.packetprep.system.service.RefreshTokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class AuthController {
 
     private final AuthService authService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest) {
@@ -47,18 +49,18 @@ public class AuthController {
         return ResponseEntity.status(OK)
                 .body(authService.getAllEmployees());
     }
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         authService.deleteById(id);
         return new ResponseEntity<>("User Successfully Deleted",
                 HttpStatus.OK);
     }
-    @DeleteMapping("/delete/{username}")
-    public ResponseEntity<String> delete(@PathVariable String username) {
-        authService.delete(username);
-        return new ResponseEntity<>("User Successfully Deleted",
-                HttpStatus.OK);
-    }
+//    @DeleteMapping("/delete/{username}")
+//    public ResponseEntity<String> delete(@PathVariable String username) {
+//        authService.delete(username);
+//        return new ResponseEntity<>("User Successfully Deleted",
+//                HttpStatus.OK);
+//    }
     @GetMapping("/accountVerification/{token}")
     public ResponseEntity<String> verifyAccount(@PathVariable String token) {
         authService.verifyAccount(token);
@@ -103,5 +105,15 @@ public class AuthController {
     public ResponseEntity<List<StudentResponse>> getDefaultRoleUsers() {
         return ResponseEntity.status(OK)
                 .body(authService.getDefaultRoleUsers());
+    }
+    @GetMapping("/get/unverifiedUsers")
+    public ResponseEntity<List<StudentResponse>> getUnverifiedUser() {
+        return ResponseEntity.status(OK)
+                .body(authService.getUnverifiedUser());
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
+        return ResponseEntity.status(OK).body("Logout Successfull!!!  Refresh Token Deleted Successfully!!");
     }
 }

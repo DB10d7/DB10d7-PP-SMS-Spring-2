@@ -2,10 +2,7 @@ package com.packetprep.system.service;
 
 import com.packetprep.system.Model.*;
 import com.packetprep.system.dto.*;
-import com.packetprep.system.exception.BatchNotFoundException;
-import com.packetprep.system.exception.RoleNotFoundException;
-import com.packetprep.system.exception.SpringPPSystemException;
-import com.packetprep.system.exception.StudentNotFoundException;
+import com.packetprep.system.exception.*;
 import com.packetprep.system.mapper.StudentMapper;
 import com.packetprep.system.repository.*;
 import com.packetprep.system.security.JwtProvider;
@@ -42,6 +39,8 @@ public class AuthService {
     private final BatchRepository batchRepository;
     private final StudentMapper studentMapper;
     private final MailService mailService;
+    private final StudentService studentService;
+    private final DayRepository dayRepository;
 
 
     public void signupAdmin(RegisterRequest registerRequest) {
@@ -132,13 +131,24 @@ public class AuthService {
     @Transactional
     public List<StudentResponse> getDefaultRoleUsers() {
         List<User> users = userRepository.findAll();
-        List<User> officeEmployee = new ArrayList<>();
-        for(User employee: users){
-            if(employee.getRole().getRoleName().equalsIgnoreCase("DEFAULT")){
-                officeEmployee.add(employee);
+        List<User> defaultUser = new ArrayList<>();
+        for(User dUser: users){
+            if((dUser.getRole().getRoleName().equalsIgnoreCase("DEFAULT")) && (dUser.isEnabled() == true)){
+                defaultUser.add(dUser);
             }
         }
-        return officeEmployee.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+        return defaultUser.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+    }
+    @Transactional
+    public List<StudentResponse> getUnverifiedUser() {
+        List<User> users = userRepository.findAll();
+        List<User> unVUser = new ArrayList<>();
+        for(User dUser: users){
+            if(dUser.isEnabled() == false){
+                unVUser.add(dUser);
+            }
+        }
+        return unVUser.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
@@ -178,6 +188,12 @@ public class AuthService {
        // System.out.println(user);
         user.setEnabled(true);
         userRepository.save(user);
+        List<VerificationToken> vts = verificationTokenRepository.findByUser(user);
+        if(vts.isEmpty() == false){
+            for(VerificationToken vt: vts){
+                verificationTokenRepository.delete(vt);
+            }
+        }
     }
     private String generateVerificationToken(User user) {
         String token = UUID.randomUUID().toString();
@@ -236,6 +252,26 @@ public class AuthService {
     public void deleteById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found - "));
+        List<DayResponse> days = studentService.getDaysByStudent(user.getUsername());
+        if(days.isEmpty() == false){
+            for(DayResponse dy: days){
+                Day day = dayRepository.findByName(dy.getDayName())
+                        .orElseThrow(() -> new DayNotFoundException(dy.getDayName()));
+                day.getUser().remove(user);
+            }
+        }
+        List<VerificationToken> vts = verificationTokenRepository.findByUser(user);
+        if(vts.isEmpty() == false){
+            for(VerificationToken vt: vts){
+                verificationTokenRepository.delete(vt);
+            }
+        }
+        List<PasswordResetToken> prts = passwordResetTokenRepository.findByUser(user);
+        if(prts.isEmpty() == false){
+            for(PasswordResetToken prt: prts){
+                passwordResetTokenRepository.delete(prt);
+            }
+        }
         userRepository.deleteById(id);
     }
     public String verifyUserForPasswordReset(ForgotPasswordRequest forgotPasswordRequest){
@@ -251,9 +287,14 @@ public class AuthService {
     private void fetchUserAndResetPassword(PasswordResetToken passwordResetToken, String password) {
         String username = passwordResetToken.getUser().getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with name - " + username));
-        // System.out.println(user);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
+        List<PasswordResetToken> prts = passwordResetTokenRepository.findByUser(user);
+        if(prts.isEmpty() == false){
+            for(PasswordResetToken prt: prts){
+                passwordResetTokenRepository.delete(prt);
+            }
+        }
     }
     public String forgotPassword(String username){
         try{
@@ -268,6 +309,5 @@ public class AuthService {
         }catch(Exception UsernameNotFoundException){
             return "UserName not registered with US. Please verify the username";
         }
-
     }
 }

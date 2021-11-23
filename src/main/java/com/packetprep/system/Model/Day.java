@@ -40,7 +40,7 @@ public class Day {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     private Batch batch;
-    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = LAZY)
     @JoinTable(name = "day_user",
         joinColumns = { @JoinColumn(name = "day_id")},
         inverseJoinColumns = { @JoinColumn (name = "user_id")}

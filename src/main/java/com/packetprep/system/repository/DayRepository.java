@@ -19,9 +19,10 @@ public interface DayRepository extends JpaRepository<Day, Long> {
 
     List<Day> findByUser(User user);
 
+    @Override
+    void delete(Day entity);
 
-
-  //  List<Day> findAllByStudents(Student student);
+    //  List<Day> findAllByStudents(Student student);
 
 
 }

@@ -32,6 +32,7 @@ public class DayService {
     private final DayMapper dayMapper;
     private final UserRepository userRepository;
     private final StudentMapper studentMapper;
+    private final StudentService studentService;
 
 
     public String save(DayRequest dayRequest) {
@@ -131,5 +132,18 @@ public class DayService {
         Day day = dayRepository.findByName(studentDayMappingDto.getDayName())
                 .orElseThrow(() -> new DayNotFoundException(studentDayMappingDto.getDayName()));
         day.getUser().remove(student);
+    }
+    public void deleteDay(String dayName) {
+        Day day = dayRepository.findByName(dayName)
+                .orElseThrow(() -> new DayNotFoundException(dayName));
+        List<StudentResponse> students = studentService.getStudentsByDay(dayName);
+        if(students.isEmpty() == false){
+            for(StudentResponse stu: students){
+                User student = userRepository.findByUsername(stu.getUsername())
+                        .orElseThrow(() -> new UsernameNotFoundException(stu.getUsername()));
+                day.getUser().remove(student);
+            }
+        }
+        dayRepository.delete(day);
     }
 }

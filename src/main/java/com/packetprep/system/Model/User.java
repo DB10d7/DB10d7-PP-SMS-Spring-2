@@ -33,7 +33,7 @@ public class User {
     private String email;
     @ManyToOne(fetch = LAZY)
     private Role role;
-    @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    @ManyToMany(fetch = LAZY, mappedBy = "user")
     private List<Day> day;
     @ManyToOne(fetch = LAZY)
     private Batch batch;
