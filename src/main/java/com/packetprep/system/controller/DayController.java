@@ -55,9 +55,9 @@ public class DayController {
     public ResponseEntity<List<DayResponse>> getAllDays() {
         return status(HttpStatus.OK).body(dayService.getAllDays());
     }
-    @DeleteMapping("/delete/{dayName}")
-    public ResponseEntity<String> deleteById(@PathVariable String dayName) {
-        dayService.deleteDay(dayName);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+        dayService.deleteDay(id);
         return new ResponseEntity<>("Day Successfully Deleted",
                 HttpStatus.OK);
     }

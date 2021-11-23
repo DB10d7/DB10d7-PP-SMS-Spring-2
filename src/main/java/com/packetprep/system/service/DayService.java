@@ -133,10 +133,10 @@ public class DayService {
                 .orElseThrow(() -> new DayNotFoundException(studentDayMappingDto.getDayName()));
         day.getUser().remove(student);
     }
-    public void deleteDay(String dayName) {
-        Day day = dayRepository.findByName(dayName)
-                .orElseThrow(() -> new DayNotFoundException(dayName));
-        List<StudentResponse> students = studentService.getStudentsByDay(dayName);
+    public void deleteDay(Long id) {
+        Day day = dayRepository.findById(id)
+                .orElseThrow(() -> new DayNotFoundException("Day Not Found"));
+        List<StudentResponse> students = studentService.getStudentsByDay(day.getName());
         if(students.isEmpty() == false){
             for(StudentResponse stu: students){
                 User student = userRepository.findByUsername(stu.getUsername())

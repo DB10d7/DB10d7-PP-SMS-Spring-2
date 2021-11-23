@@ -15,6 +15,8 @@ public interface DayRepository extends JpaRepository<Day, Long> {
 
     Optional<Day> findByName(String dayName);
 
+    Optional<Day> findById(Long id);
+
     List<Day> findAllByBatch(Batch batch);
 
     List<Day> findByUser(User user);
