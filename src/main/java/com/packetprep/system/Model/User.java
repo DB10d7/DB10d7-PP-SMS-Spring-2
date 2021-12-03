@@ -1,5 +1,6 @@
 package com.packetprep.system.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,4 +40,7 @@ public class User {
     private Batch batch;
     private Instant created;
     private boolean enabled;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Image image;
 }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -45,7 +46,7 @@ public class StudentController {
     }
 
     @GetMapping("/get/{studentName}")
-    public ResponseEntity<StudentResponse> getSingleStudent(@PathVariable String studentName ) {
+    public ResponseEntity<StudentResponse> getSingleStudent(@PathVariable String studentName ) throws IOException {
         return new ResponseEntity<>(studentService.readSingleStudent(studentName), HttpStatus.OK);
     }
 

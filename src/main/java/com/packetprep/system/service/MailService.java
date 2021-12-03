@@ -21,6 +21,7 @@ public class MailService {
 
     @Async
     void sendMail(NotificationEmail notificationEmail) {
+
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("info@packetprep.com");

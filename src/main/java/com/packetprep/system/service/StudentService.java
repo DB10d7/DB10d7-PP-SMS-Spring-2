@@ -18,6 +18,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,7 @@ public class StudentService {
     private final RefreshTokenService refreshTokenService;
     private final VerificationTokenRepository verificationTokenRepository;
     private final UserRepository userRepository;
+    private final ImageService imageService;
 
   /*  public void signup(StudentDto studentDto) {
         String batchName="Default";
@@ -124,9 +128,11 @@ public class StudentService {
     }
 
     @Transactional
-    public StudentResponse readSingleStudent(String studentName) {
+    public StudentResponse readSingleStudent(String studentName) throws IOException {
         User student = userRepository.findByUsername(studentName).orElseThrow(() -> new StudentNotFoundException(studentName));
-        return studentMapper.mapFromStudentToDto(student);
+        StudentResponse sm= studentMapper.mapFromStudentToDto(student);
+//        sm.setFile((MultipartFile) imageService.getImage(student));
+         return sm;
     }
     @Transactional(readOnly = true)
     public List<StudentResponse>getStudentsByBatch(String batchName) {

@@ -2,6 +2,7 @@ package com.packetprep.system.repository;
 
 import com.packetprep.system.Model.Batch;
 import com.packetprep.system.Model.Day;
+import com.packetprep.system.Model.Image;
 import com.packetprep.system.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAll();
 
     Optional<User> findById(Long id);
+
+    Optional<Image> findByImage(Image image);
 
     List<User> findAllByDay(Day day);
 

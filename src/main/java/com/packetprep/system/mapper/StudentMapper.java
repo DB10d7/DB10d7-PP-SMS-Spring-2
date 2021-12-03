@@ -3,15 +3,23 @@ package com.packetprep.system.mapper;
 import com.packetprep.system.Model.User;
 import com.packetprep.system.dto.AuthenticationResponse;
 import com.packetprep.system.dto.StudentResponse;
+import com.packetprep.system.service.ImageService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.time.Instant;
 
 
 @Mapper(componentModel = "spring")
 public class StudentMapper {
 
+//    @Autowired
+//    private ImageService imageService;
 
   /*  public Student mapFromDtoToStudent(StudentDto studentDto, Batch batch) {
         Student student = new Student();
@@ -49,9 +57,21 @@ public class StudentMapper {
         studentResponse.setRole(user.getRole().getRoleName());
         studentResponse.setPassword(user.getPassword());
         studentResponse.setBatch(user.getBatch().getName());
-     //   studentResponse.setBatch(user.getBatch().getName());
+        // studentResponse.setFile((MultipartFile) imageService.getImage(user));
         return studentResponse;
     }
+//    public StudentResponse mapFromStudentToDtoStudentDetails(User user) {
+//        StudentResponse studentResponse = new StudentResponse();
+//        studentResponse.setId(user.getUserId());
+//        studentResponse.setUsername(user.getUsername());
+//        studentResponse.setName(user.getName());
+//        studentResponse.setEmail(user.getEmail());
+//        studentResponse.setRole(user.getRole().getRoleName());
+//        studentResponse.setPassword(user.getPassword());
+//        studentResponse.setBatch(user.getBatch().getName());
+//        // studentResponse.setFile((MultipartFile) imageService.getImage(user));
+//        return studentResponse;
+//    }
    /* public AuthenticationResponse mapFromStudentToDto(User user) {
         AuthenticationResponse studentDto = new AuthenticationResponse();
         studentDto.setUsername(user.getUsername());

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -22,7 +23,7 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest) throws IOException {
         return new ResponseEntity<>(authService.signup(registerRequest),
                 HttpStatus.OK);
     }
@@ -32,13 +33,18 @@ public class AuthController {
         return new ResponseEntity<>("User Registration Successful",
                 HttpStatus.OK);
     }
-    @PutMapping("/update/{username}")
+    @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest) {
         authService.update(registerRequest);
         return new ResponseEntity<>("User Update Successful",
                 HttpStatus.OK);
     }
-
+    @PutMapping("/updateProfile")
+    public ResponseEntity<String> updateProfile(@RequestBody RegisterRequest registerRequest) {
+        authService.update(registerRequest);
+        return new ResponseEntity<>("User Update Successful",
+                HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<StudentResponse>> getAllUsers() {
         return ResponseEntity.status(OK)

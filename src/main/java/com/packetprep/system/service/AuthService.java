@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,8 @@ public class AuthService {
     private final MailService mailService;
     private final StudentService studentService;
     private final DayRepository dayRepository;
+    private final ImageService imageService;
+    private final ImageRepository imageRepository;
 
 
     public void signupAdmin(RegisterRequest registerRequest) {
@@ -62,7 +66,7 @@ public class AuthService {
                 "please click on the below url to activate your account : " +
                 "http://localhost:8080/api/auth/accountVerification/" + token)); */
     }
-    public String signup(RegisterRequest registerRequest) {
+    public String signup(RegisterRequest registerRequest) throws IOException {
         User user = new User();
         try{
             User prevUser = userRepository.findByUsername(registerRequest.getUsername())
@@ -82,6 +86,7 @@ public class AuthService {
             user.setCreated(Instant.now());
             user.setEnabled(false);
             userRepository.save(user);
+//            imageService.uplaodImage(user, registerRequest.getFile());
             String token = generateVerificationToken(user);
             mailService.sendMail(new NotificationEmail("Please Activate your Account",
                     user.getEmail(), "Thank you for signing up to Packet-Prep, " +
@@ -237,6 +242,25 @@ public class AuthService {
         user.setRole(role);
         user.setBatch(batch);
        // user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+//        user.setPassword(registerRequest.getPassword());
+        user.setCreated(Instant.now());
+        user.setEnabled(true);
+        userRepository.save(user);
+
+    }
+    public void updateProfile(RegisterRequest registerRequest) {
+        User user = userRepository.findByUsername(getCurrentUser().getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(registerRequest.getUsername()));
+        Role role = roleRepository.findByRoleName(registerRequest.getRole())
+                .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
+        Batch batch = batchRepository.findByName(registerRequest.getBatch())
+                .orElseThrow(() -> new BatchNotFoundException(registerRequest.getBatch()));
+        user.setUsername(registerRequest.getUsername());
+        user.setEmail(registerRequest.getEmail());
+        user.setName(registerRequest.getName());
+        user.setRole(role);
+        user.setBatch(batch);
+        // user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setPassword(registerRequest.getPassword());
         user.setCreated(Instant.now());
         user.setEnabled(true);
@@ -272,7 +296,16 @@ public class AuthService {
                 passwordResetTokenRepository.delete(prt);
             }
         }
-        userRepository.deleteById(id);
+        try{
+            Image img = imageRepository.findByUser(user).orElseThrow(() -> new ImageNotFoundException("Image not found with user name - " + user.getName()));
+            imageRepository.delete(img);
+            userRepository.deleteById(id);
+        }catch(Exception ImageNotFoundException){
+            userRepository.deleteById(id);
+        }
+
+
+
     }
     public String verifyUserForPasswordReset(ForgotPasswordRequest forgotPasswordRequest){
         try{
@@ -310,4 +343,16 @@ public class AuthService {
             return "UserName not registered with US. Please verify the username";
         }
     }
+//    public String forgotPassword(String username){
+//        try{
+//            User user = userRepository.findByUsername(username)
+//                    .orElseThrow(() -> new UsernameNotFoundException(username));
+//            String token = generatePasswordResetToken(user);
+//            mailService.sendMail(new NotificationEmail("Please Reset your Password",
+//                    user.getEmail(), token));
+//            return "Reset-Password link successfully sent to your registered email address";
+//        }catch(Exception UsernameNotFoundException){
+//            return "UserName not registered with US. Please verify the username";
+//        }
+//    }
 }

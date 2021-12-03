@@ -1,6 +1,6 @@
 package com.packetprep.system.dto;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,14 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class StudentResponse {
-    private Long id;
+public class ImageRequest {
     private String username;
-    private String name;
-    private String email;
-    private String password;
-    private String batch;
-    private String role;
-    private MultipartFile file;
+    private MultipartFile selectedFile;
 }
