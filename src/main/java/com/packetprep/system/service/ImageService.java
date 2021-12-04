@@ -31,7 +31,7 @@ public class ImageService {
     private final UserRepository userRepository;
     public final ImageMapper imageMapper;
 
-    public void uplaodImage(String username, MultipartFile file) throws IOException, ImageNotFoundException {
+    public void uplaodImage(String username, MultipartFile file) throws IOException {
         System.out.println("UserName is : "+username);
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with name - " + username));
 
@@ -43,25 +43,41 @@ public class ImageService {
         imageRepository.save(img);
 
     }
-    public void updateImage(String username, MultipartFile file) throws IOException, ImageNotFoundException {
+    public void updateImage(String username, MultipartFile file) throws IOException {
         System.out.println("UserName is : "+username);
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with name - " + username));
-        Image img = imageRepository.findByUser(user).orElseThrow(() -> new ImageNotFoundException("Image not found with user name - " + username));
-        img.setName(file.getOriginalFilename());
-        img.setType(file.getContentType());
-        img.setPicByte(compressBytes(file.getBytes()));
-        imageRepository.save(img);
+        try{
+            Image img = imageRepository.findByUser(user).orElseThrow(() -> new ImageNotFoundException("Image not found with user name - " + username));
+            img.setName(file.getOriginalFilename());
+            img.setType(file.getContentType());
+            img.setPicByte(compressBytes(file.getBytes()));
+            imageRepository.save(img);
+        }catch(Exception ImageNotFoundException){
+            Image img = new Image();
+            img.setName(file.getOriginalFilename());
+            img.setType(file.getContentType());
+            img.setPicByte(compressBytes(file.getBytes()));
+            img.setUser(user);
+            imageRepository.save(img);
+        }
+
 
     }
     public ImageResponse getImage(String username) throws IOException {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with name - " + username));
-        Image image = imageRepository.findByUser(user).orElseThrow(() -> new ImageNotFoundException("Image not found with user name - " + username));
-        ImageResponse img = new ImageResponse();
-        img.setId(image.getId());
-        img.setName(image.getName());
-        img.setType(image.getType());
-        img.setPicByte(decompressBytes(image.getPicByte()));
-        return img;
+        try{
+            Image image = imageRepository.findByUser(user).orElseThrow(() -> new ImageNotFoundException("Image not found with user name - " + username));
+            ImageResponse img = new ImageResponse();
+            img.setId(image.getId());
+            img.setName(image.getName());
+            img.setType(image.getType());
+            img.setPicByte(decompressBytes(image.getPicByte()));
+            return img;
+        }catch(Exception ImageNotFoundException){
+             ImageResponse img = new ImageResponse();
+            img.setName("hello");
+             return img;
+        }
     }
     // compress the image bytes before storing it in the database
     public static byte[] compressBytes(byte[] data) {

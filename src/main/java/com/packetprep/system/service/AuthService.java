@@ -261,8 +261,8 @@ public class AuthService {
         user.setRole(role);
         user.setBatch(batch);
         // user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setPassword(registerRequest.getPassword());
-        user.setCreated(Instant.now());
+//        user.setPassword(registerRequest.getPassword());
+//        user.setCreated(Instant.now());
         user.setEnabled(true);
         userRepository.save(user);
 
