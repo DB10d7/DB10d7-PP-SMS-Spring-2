@@ -88,10 +88,16 @@ public class AuthService {
             userRepository.save(user);
 //            imageService.uplaodImage(user, registerRequest.getFile());
             String token = generateVerificationToken(user);
-            mailService.sendMail(new NotificationEmail("Please Activate your Account",
-                    user.getEmail(), "Thank you for signing up to Packet-Prep, " +
-                    "please click on the below url to activate your account : " +
-                    "http://localhost:4200/account-activation/" + token));
+            MailRequest mailRequest = new MailRequest();
+            mailRequest.setTo(registerRequest.getEmail());
+            mailRequest.setName(registerRequest.getUsername());
+            mailRequest.setToken(token);
+            mailRequest.setSubject("Account Activation Email");
+            mailService.sendEmail(mailRequest);
+//            mailService.sendMail(new NotificationEmail("Please Activate your Account",
+//                    user.getEmail(), "Thank you for signing up to Packet-Prep, " +
+//                    "please click on the below url to activate your account : " +
+//                    "http://localhost:4200/account-activation/" + token));
             return "User Registered Successfully";
         }
     }
@@ -334,10 +340,10 @@ public class AuthService {
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException(username));
             String token = generatePasswordResetToken(user);
-            mailService.sendMail(new NotificationEmail("Please Reset your Password",
-                    user.getEmail(), "Thank you for signing up to Packet-Prep, " +
-                    "please click on the below url to reset your password : " +
-                    "http://localhost:4200/reset-Password/" + token));
+//            mailService.sendMail(new NotificationEmail("Please Reset your Password",
+//                    user.getEmail(), "Thank you for signing up to Packet-Prep, " +
+//                    "please click on the below url to reset your password : " +
+//                    "http://localhost:4200/reset-Password/" + token));
             return "Reset-Password link successfully sent to your registered email address";
         }catch(Exception UsernameNotFoundException){
             return "UserName not registered with US. Please verify the username";
