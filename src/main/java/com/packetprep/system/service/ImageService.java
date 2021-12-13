@@ -31,7 +31,7 @@ public class ImageService {
     private final UserRepository userRepository;
     public final ImageMapper imageMapper;
 
-    public void uplaodImage(String username, MultipartFile file) throws IOException {
+    public void uploadImage(String username, MultipartFile file) throws IOException {
         System.out.println("UserName is : "+username);
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with name - " + username));
 

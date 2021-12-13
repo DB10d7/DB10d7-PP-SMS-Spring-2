@@ -30,9 +30,9 @@ public class ImageController {
     public final AuthService authService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uplaodImage(@RequestParam("imageFile") MultipartFile file, @RequestParam("username") String username) throws IOException {
+    public ResponseEntity<String> uploadImage(@RequestParam("imageFile") MultipartFile file, @RequestParam("username") String username) throws IOException {
 
-        imageService.uplaodImage(username,file);
+        imageService.uploadImage(username,file);
         return new ResponseEntity<>("Image Uploaded", HttpStatus.OK);
     }
     @PostMapping("/update")

@@ -29,7 +29,7 @@ public class Image {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "picByte", length = 5000)
+    @Column(name = "picByte", length = 100000)
     private byte[] picByte;
 
 //    @JsonIgnore

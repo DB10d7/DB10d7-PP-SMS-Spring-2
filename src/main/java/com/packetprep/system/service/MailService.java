@@ -66,7 +66,7 @@ public class MailService {
 //
 //            return sendEmail(request, map);
 //        }
-        public MailResponse sendEmail(MailRequest request){
+        public MailResponse sendEmailForActivation(MailRequest request){
             Map<String, Object> map = new HashMap<>();
             map.put("name",request.getName());
             map.put("token",request.getToken());
@@ -95,4 +95,33 @@ public class MailService {
 
             return response;
         }
+    public MailResponse sendEmailForForgetPassword(MailRequest request){
+        Map<String, Object> map = new HashMap<>();
+        map.put("name",request.getName());
+        map.put("token",request.getToken());
+        MailResponse response= new MailResponse();
+        MimeMessage message= mailSender.createMimeMessage();
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+
+            Template template = config.getTemplate("forgetPasswordEmail.html");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
+
+            helper.setTo(request.getTo());
+            helper.setText(html, true);
+            helper.setSubject(request.getSubject());
+            helper.setFrom("info@Packetprep.com");
+            mailSender.send(message);
+
+            response.setMessage("Mail Send To : " + request.getTo());
+            response.setStatus(Boolean.TRUE);
+
+        }catch(MessagingException | IOException | TemplateException e){
+            response.setMessage("Mail Sending Failure : " + e.getMessage());
+            response.setStatus(Boolean.FALSE);
+        }
+
+        return response;
+    }
 }

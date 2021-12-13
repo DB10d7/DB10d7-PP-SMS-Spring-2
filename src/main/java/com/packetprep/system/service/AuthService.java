@@ -93,7 +93,7 @@ public class AuthService {
             mailRequest.setName(registerRequest.getUsername());
             mailRequest.setToken(token);
             mailRequest.setSubject("Account Activation Email");
-            mailService.sendEmail(mailRequest);
+            mailService.sendEmailForActivation(mailRequest);
 //            mailService.sendMail(new NotificationEmail("Please Activate your Account",
 //                    user.getEmail(), "Thank you for signing up to Packet-Prep, " +
 //                    "please click on the below url to activate your account : " +
@@ -340,6 +340,12 @@ public class AuthService {
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException(username));
             String token = generatePasswordResetToken(user);
+            MailRequest mailRequest = new MailRequest();
+            mailRequest.setTo(user.getEmail());
+            mailRequest.setName(user.getUsername());
+            mailRequest.setToken(token);
+            mailRequest.setSubject("Reset Password Email");
+            mailService.sendEmailForForgetPassword(mailRequest);
 //            mailService.sendMail(new NotificationEmail("Please Reset your Password",
 //                    user.getEmail(), "Thank you for signing up to Packet-Prep, " +
 //                    "please click on the below url to reset your password : " +
