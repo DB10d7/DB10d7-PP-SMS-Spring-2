@@ -32,6 +32,7 @@ public class Day {
     private String description;
     @Column
     private Instant createdOn;
+
     @Column
     private Instant updatedOn;
     @ManyToOne(fetch = LAZY)
@@ -46,4 +47,7 @@ public class Day {
         inverseJoinColumns = { @JoinColumn (name = "user_id")}
     )
     private List<User> user;
+
+    @NotBlank
+    private String topic;
 }

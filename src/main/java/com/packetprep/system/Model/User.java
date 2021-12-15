@@ -43,4 +43,31 @@ public class User {
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Image image;
+
+    @NotBlank
+    private String surname;
+    @NotBlank
+    private String status;
+    @NotBlank
+    private String collegeName;
+    @NotBlank
+    private String universityName;
+    @NotBlank
+    private String state;
+    @NotBlank
+    private String city;
+    @NotBlank
+    private String birthDate;
+    @NotBlank
+    private String tenthMarks;
+    @NotBlank
+    private String twelfthMarks;
+    @NotBlank
+    private String graduationMarks;
+    @NotBlank
+    private String yearOfPassing;
+    @NotBlank
+    private String number;
+    @NotBlank
+    private String gender;
 }

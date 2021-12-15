@@ -14,8 +14,21 @@ public class StudentResponse {
     private String username;
     private String name;
     private String email;
-//    private String password;
     private String batch;
     private String role;
+
+    private String surname;
+    private String collegeName;
+    private String university;
+    private String state;
+    private String city;
+    private String gender;
+    private String yearOfPassing;
+    private String tenthMarks;
+    private String twelfthMarks;
+    private String graduationMarks;
+    private String number;
+    private String status;
+    private String birthDate;
 
 }

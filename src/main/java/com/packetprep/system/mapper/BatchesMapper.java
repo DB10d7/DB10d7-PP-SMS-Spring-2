@@ -16,11 +16,11 @@ public class BatchesMapper {
     @Autowired
     private BatchRepository batchRepository;
 
-    public Batch mapFromDtoToBatch(BatchRequest batchRequest, User user) {
+    public Batch mapFromDtoToBatch(BatchRequest batchRequest) {
         Batch batch = new Batch();
         batch.setName(batchRequest.getName());
         batch.setDescription(batchRequest.getDescription());
-        batch.setCreatedBy(user);
+//        batch.setCreatedBy(user);
         batch.setCreatedOn(Instant.now());
         batch.setUpdatedOn(Instant.now());
         return batch;
@@ -31,15 +31,15 @@ public class BatchesMapper {
         batchResponse.setDescription(batch.getDescription());
         batchResponse.setId(batch.getId());
        // batchDto.setNumberOfDays(batch.getNumberOfDays());
-        batchResponse.setCreatedBy(batch.getCreatedBy().getUsername());
+//        batchResponse.setCreatedBy(batch.getCreatedBy().getUsername());
         return batchResponse;
     }
-    public void updateFromDtoToBatch(BatchRequest batchRequest, User user,Batch batch) {
+    public void updateFromDtoToBatch(BatchRequest batchRequest,Batch batch) {
 
        // batch.setId(batchRequest.getId());
         batch.setName(batchRequest.getName());
         batch.setDescription(batchRequest.getDescription());
-        batch.setCreatedBy(user);
+//        batch.setCreatedBy(user);
        // batch.setCreatedOn(Instant.now());
         batch.setUpdatedOn(Instant.now());
         batchRepository.save(batch);

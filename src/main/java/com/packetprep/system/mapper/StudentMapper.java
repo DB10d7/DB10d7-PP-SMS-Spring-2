@@ -55,8 +55,20 @@ public class StudentMapper {
         studentResponse.setName(user.getName());
         studentResponse.setEmail(user.getEmail());
         studentResponse.setRole(user.getRole().getRoleName());
-//        studentResponse.setPassword(user.getPassword());
+        studentResponse.setSurname(user.getSurname());
+        studentResponse.setState(user.getState());
+        studentResponse.setCity(user.getCity());
+        studentResponse.setStatus(user.getStatus());
+        studentResponse.setBirthDate(user.getBirthDate());
+        studentResponse.setCollegeName(user.getCollegeName());
+        studentResponse.setUniversity(user.getUniversityName());
+        studentResponse.setGender(user.getGender());
+        studentResponse.setTenthMarks(user.getTenthMarks());
+        studentResponse.setTwelfthMarks(user.getTwelfthMarks());
+        studentResponse.setGraduationMarks(user.getGraduationMarks());
         studentResponse.setBatch(user.getBatch().getName());
+        studentResponse.setYearOfPassing(user.getYearOfPassing());
+        studentResponse.setNumber(user.getNumber());
         // studentResponse.setFile((MultipartFile) imageService.getImage(user));
         return studentResponse;
     }

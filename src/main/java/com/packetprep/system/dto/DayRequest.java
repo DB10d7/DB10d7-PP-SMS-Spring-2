@@ -16,4 +16,6 @@ public class DayRequest {
     private String url;
     private String description;
     private String createdBy;
+
+    private String topic;
 }

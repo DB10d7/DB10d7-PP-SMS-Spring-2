@@ -30,13 +30,13 @@ public class BatchService {
 
     @Transactional
     public String save(BatchRequest batchRequest) {
-        User user = userRepository.findByUsername(batchRequest.getCreatedBy())
-                .orElseThrow(() -> new UsernameNotFoundException(batchRequest.getCreatedBy()) );
+//        User user = userRepository.findByUsername(batchRequest.getCreatedBy())
+//                .orElseThrow(() -> new UsernameNotFoundException(batchRequest.getCreatedBy()) );
         try{
             Batch batch = batchRepository.findByName(batchRequest.getName()).orElseThrow(() -> new BatchNotFoundException(batchRequest.getName()));
             return "Batch Already Created";
         }catch (Exception BatchNotFoundException ){
-            Batch batch = batchRepository.save(batchMapper.mapFromDtoToBatch(batchRequest, user));
+            Batch batch = batchRepository.save(batchMapper.mapFromDtoToBatch(batchRequest));
             return "Batch Successfully Created";
         }
 
@@ -47,9 +47,9 @@ public class BatchService {
 
         Batch batch = batchRepository.findByName(batchRequest.getName()).orElseThrow(() -> new BatchNotFoundException(batchRequest.getName()));
 
-       User user = userRepository.findByUsername(batchRequest.getCreatedBy())
-               .orElseThrow(() -> new UsernameNotFoundException(batchRequest.getCreatedBy()) );
-       batchMapper.updateFromDtoToBatch(batchRequest,user,batch);
+//       User user = userRepository.findByUsername(batchRequest.getCreatedBy())
+//               .orElseThrow(() -> new UsernameNotFoundException(batchRequest.getCreatedBy()) );
+       batchMapper.updateFromDtoToBatch(batchRequest,batch);
     }
 
     @Transactional(readOnly = true)

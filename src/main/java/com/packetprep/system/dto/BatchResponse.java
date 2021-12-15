@@ -14,5 +14,5 @@ public class BatchResponse {
     private String name;
     private String description;
     //  private Integer numberOfDays;
-    private String createdBy;
+//    private String createdBy;
 }

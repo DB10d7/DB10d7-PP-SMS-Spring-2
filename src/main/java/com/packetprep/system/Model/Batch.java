@@ -29,12 +29,12 @@ public class Batch {
     private Instant createdOn;
     @Column
     private Instant updatedOn;
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
-    private User createdBy;
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "userId", referencedColumnName = "userId")
+//    private User createdBy;
     @OneToMany(fetch = LAZY)
     private List<Day> days;
-    private Instant createdDate;
+//    private Instant createdDate;
   /*  @ManyToMany(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "batch_user",
             joinColumns = { @JoinColumn(name = "batch_id")},

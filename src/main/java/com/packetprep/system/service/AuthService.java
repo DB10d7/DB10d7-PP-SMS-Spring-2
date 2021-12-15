@@ -47,25 +47,7 @@ public class AuthService {
     private final ImageRepository imageRepository;
 
 
-    public void signupAdmin(RegisterRequest registerRequest) {
-        User user = new User();
-        Role role = roleRepository.findByRoleName(registerRequest.getRole())
-                .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
-        user.setUsername(registerRequest.getUsername());
-        user.setName(registerRequest.getName());
-        user.setEmail(registerRequest.getEmail());
-        user.setRole(role);
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setCreated(Instant.now());
-        user.setEnabled(true);
-        userRepository.save(user);
 
-        // String token = generateVerificationToken(user);
-      /*  mailService.sendMail(new NotificationEmail("Please Activate your Account",
-                user.getEmail(), "Thank you for signing up to Spring Reddit, " +
-                "please click on the below url to activate your account : " +
-                "http://localhost:8080/api/auth/accountVerification/" + token)); */
-    }
     public String signup(RegisterRequest registerRequest) throws IOException {
         User user = new User();
         try{
@@ -85,8 +67,27 @@ public class AuthService {
             user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             user.setCreated(Instant.now());
             user.setEnabled(false);
+
+            /* Start Complete User Part */
+
+            user.setSurname(registerRequest.getSurname());
+            user.setStatus(registerRequest.getStatus());
+            user.setTenthMarks(registerRequest.getTenthMarks());
+            user.setTwelfthMarks(registerRequest.getTwelfthMarks());
+            user.setGraduationMarks(registerRequest.getGraduationMarks());
+            user.setYearOfPassing(registerRequest.getYearOfPassing());
+            user.setState(registerRequest.getState());
+            user.setCity(registerRequest.getCity());
+            user.setNumber(registerRequest.getNumber());
+            user.setCollegeName(registerRequest.getCollegeName());
+            user.setUniversityName(registerRequest.getUniversity());
+            user.setBirthDate(registerRequest.getBirthDate());
+            user.setGender(registerRequest.getGender());
+
+            /* End of complete User Part */
+
             userRepository.save(user);
-//            imageService.uplaodImage(user, registerRequest.getFile());
+
             String token = generateVerificationToken(user);
             MailRequest mailRequest = new MailRequest();
             mailRequest.setTo(registerRequest.getEmail());
@@ -94,10 +95,6 @@ public class AuthService {
             mailRequest.setToken(token);
             mailRequest.setSubject("Account Activation Email");
             mailService.sendEmailForActivation(mailRequest);
-//            mailService.sendMail(new NotificationEmail("Please Activate your Account",
-//                    user.getEmail(), "Thank you for signing up to Packet-Prep, " +
-//                    "please click on the below url to activate your account : " +
-//                    "http://localhost:4200/account-activation/" + token));
             return "User Registered Successfully";
         }
     }
@@ -247,10 +244,25 @@ public class AuthService {
         user.setName(registerRequest.getName());
         user.setRole(role);
         user.setBatch(batch);
-       // user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-//        user.setPassword(registerRequest.getPassword());
-        user.setCreated(Instant.now());
-        user.setEnabled(true);
+
+        /* Start Complete User Part */
+
+        user.setSurname(registerRequest.getSurname());
+        user.setStatus(registerRequest.getStatus());
+        user.setTenthMarks(registerRequest.getTenthMarks());
+        user.setTwelfthMarks(registerRequest.getTwelfthMarks());
+        user.setGraduationMarks(registerRequest.getGraduationMarks());
+        user.setYearOfPassing(registerRequest.getYearOfPassing());
+        user.setState(registerRequest.getState());
+        user.setCity(registerRequest.getCity());
+        user.setNumber(registerRequest.getNumber());
+        user.setCollegeName(registerRequest.getCollegeName());
+        user.setUniversityName(registerRequest.getUniversity());
+        user.setBirthDate(registerRequest.getBirthDate());
+        user.setGender(registerRequest.getGender());
+
+        /* End of complete User Part */
+
         userRepository.save(user);
 
     }
@@ -266,9 +278,6 @@ public class AuthService {
         user.setName(registerRequest.getName());
         user.setRole(role);
         user.setBatch(batch);
-        // user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-//        user.setPassword(registerRequest.getPassword());
-//        user.setCreated(Instant.now());
         user.setEnabled(true);
         userRepository.save(user);
 
@@ -346,25 +355,9 @@ public class AuthService {
             mailRequest.setToken(token);
             mailRequest.setSubject("Reset Password Email");
             mailService.sendEmailForForgetPassword(mailRequest);
-//            mailService.sendMail(new NotificationEmail("Please Reset your Password",
-//                    user.getEmail(), "Thank you for signing up to Packet-Prep, " +
-//                    "please click on the below url to reset your password : " +
-//                    "http://localhost:4200/reset-Password/" + token));
             return "Reset-Password link successfully sent to your registered email address";
         }catch(Exception UsernameNotFoundException){
             return "UserName not registered with US. Please verify the username";
         }
     }
-//    public String forgotPassword(String username){
-//        try{
-//            User user = userRepository.findByUsername(username)
-//                    .orElseThrow(() -> new UsernameNotFoundException(username));
-//            String token = generatePasswordResetToken(user);
-//            mailService.sendMail(new NotificationEmail("Please Reset your Password",
-//                    user.getEmail(), token));
-//            return "Reset-Password link successfully sent to your registered email address";
-//        }catch(Exception UsernameNotFoundException){
-//            return "UserName not registered with US. Please verify the username";
-//        }
-//    }
 }
