@@ -83,6 +83,8 @@ public class AuthService {
             user.setUniversityName(registerRequest.getUniversity());
             user.setBirthDate(registerRequest.getBirthDate());
             user.setGender(registerRequest.getGender());
+            user.setGraduation(registerRequest.getGraduation());
+            user.setGraduationBranch(registerRequest.getGraduationBranch());
 
             /* End of complete User Part */
 

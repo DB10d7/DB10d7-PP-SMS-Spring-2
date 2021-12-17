@@ -69,7 +69,8 @@ public class StudentMapper {
         studentResponse.setBatch(user.getBatch().getName());
         studentResponse.setYearOfPassing(user.getYearOfPassing());
         studentResponse.setNumber(user.getNumber());
-        // studentResponse.setFile((MultipartFile) imageService.getImage(user));
+        studentResponse.setGraduation(user.getGraduation());
+        studentResponse.setGraduationBranch(user.getGraduationBranch());
         return studentResponse;
     }
 //    public StudentResponse mapFromStudentToDtoStudentDetails(User user) {

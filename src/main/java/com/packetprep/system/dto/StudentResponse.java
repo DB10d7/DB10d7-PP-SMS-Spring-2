@@ -30,5 +30,6 @@ public class StudentResponse {
     private String number;
     private String status;
     private String birthDate;
-
+    private String graduation;
+    private String graduationBranch;
 }

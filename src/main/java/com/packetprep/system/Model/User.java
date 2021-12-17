@@ -70,4 +70,8 @@ public class User {
     private String number;
     @NotBlank
     private String gender;
+    @NotBlank
+    private String graduation;
+    @NotBlank
+    private String graduationBranch;
 }

@@ -30,5 +30,6 @@ public class RegisterRequest {
     private String number;
     private String status= "Ongoing";
     private String birthDate;
-
+    private String graduation;
+    private String graduationBranch;
 }
