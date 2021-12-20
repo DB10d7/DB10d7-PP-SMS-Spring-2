@@ -17,6 +17,7 @@ public class DayMapper {
         day.setName(dayRequest.getDayName());
         day.setUrl(dayRequest.getUrl());
         day.setCreatedBy(user);
+        day.setTopic(dayRequest.getTopic());
         day.setDescription(dayRequest.getDescription());
         day.setBatch(batch);
         day.setCreatedOn(Instant.now());
@@ -28,6 +29,7 @@ public class DayMapper {
         dayResponse.setId(day.getDayId());
         dayResponse.setUrl(day.getUrl());
         dayResponse.setDescription(day.getDescription());
+        dayResponse.setTopic(day.getTopic());
         dayResponse.setCreatedBy(day.getCreatedBy().getUsername());
         dayResponse.setBatchName(day.getBatch().getName());
         dayResponse.setDayName(day.getName());
@@ -40,7 +42,7 @@ public class DayMapper {
         day.setCreatedBy(user);
         day.setDescription(dayRequest.getDescription());
         day.setBatch(batch);
-        //day.setCreatedOn(Instant.now());
+        day.setTopic(dayRequest.getTopic());
         day.setUpdatedOn(Instant.now());
         return day;
     }

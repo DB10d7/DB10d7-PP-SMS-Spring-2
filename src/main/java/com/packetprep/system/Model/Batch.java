@@ -24,6 +24,7 @@ public class Batch {
     @NotBlank(message = "Community name is required")
     private String name;
     @NotBlank(message = "Description is required")
+    @Column(length=1000)
     private String description;
     @Column
     private Instant createdOn;

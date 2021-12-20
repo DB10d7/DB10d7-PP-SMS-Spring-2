@@ -13,7 +13,8 @@ public class DayResponse {
     private String description;
     private String createdBy;
     private String batchName;
-   // private Integer voteCount;
-  //  private Integer commentCount;
-   // private String duration;
+
+    private String topic;
+
+
 }
