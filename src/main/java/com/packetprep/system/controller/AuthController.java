@@ -27,15 +27,15 @@ public class AuthController {
         return new ResponseEntity<>(authService.signup(registerRequest),
                 HttpStatus.OK);
     }
-    @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest) {
-        authService.update(registerRequest);
+    @PutMapping("/update/{username}")
+    public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest,@PathVariable String username) {
+        authService.update(registerRequest,username);
         return new ResponseEntity<>("User Update Successful",
                 HttpStatus.OK);
     }
-    @PutMapping("/updateProfile")
-    public ResponseEntity<String> updateProfile(@RequestBody RegisterRequest registerRequest) {
-        authService.update(registerRequest);
+    @PutMapping("/updateProfile/{username}")
+    public ResponseEntity<String> updateProfile(@RequestBody RegisterRequest registerRequest,@PathVariable String username) {
+        authService.update(registerRequest,username);
         return new ResponseEntity<>("User Update Successful",
                 HttpStatus.OK);
     }

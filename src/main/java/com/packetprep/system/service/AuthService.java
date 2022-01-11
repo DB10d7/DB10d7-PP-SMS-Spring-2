@@ -234,8 +234,8 @@ public class AuthService {
                 .build();
     }
 
-    public void update(RegisterRequest registerRequest) {
-        User user = userRepository.findByUsername(registerRequest.getUsername())
+    public void update(RegisterRequest registerRequest, String username) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(registerRequest.getUsername()));
         Role role = roleRepository.findByRoleName(registerRequest.getRole())
                 .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
@@ -268,7 +268,7 @@ public class AuthService {
         userRepository.save(user);
 
     }
-    public void updateProfile(RegisterRequest registerRequest) {
+    public void updateProfile(RegisterRequest registerRequest,String username) {
         User user = userRepository.findByUsername(getCurrentUser().getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(registerRequest.getUsername()));
         Role role = roleRepository.findByRoleName(registerRequest.getRole())
