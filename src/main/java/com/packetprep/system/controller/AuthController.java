@@ -27,6 +27,11 @@ public class AuthController {
         return new ResponseEntity<>(authService.signup(registerRequest),
                 HttpStatus.OK);
     }
+    @GetMapping("/hello")
+    public String Hello(){
+        return("Hello");
+    }
+
     @PutMapping("/update/{username}")
     public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest,@PathVariable String username) {
         authService.update(registerRequest,username);
