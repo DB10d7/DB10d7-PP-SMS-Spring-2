@@ -7,6 +7,8 @@ import com.packetprep.system.mapper.StudentMapper;
 import com.packetprep.system.repository.*;
 import com.packetprep.system.security.JwtProvider;
 import lombok.AllArgsConstructor;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -361,5 +363,92 @@ public class AuthService {
         }catch(Exception UsernameNotFoundException){
             return "UserName not registered with US. Please verify the username";
         }
+    }
+    public String uploadExcel(String excelFile){
+
+        JSONArray excel = new JSONArray(excelFile);
+
+        for(int i=0;i<excel.length();i++){
+           JSONObject jsonExcel= excel.getJSONObject(i);
+
+            String email=jsonExcel.getString("email");
+            String username = jsonExcel.getString("username");
+            String name= jsonExcel.getString("name");
+            String password= jsonExcel.getString("password");
+            String ubatch = jsonExcel.getString("batch");
+            String urole= jsonExcel.getString("role");
+            String surname = jsonExcel.getString("surname");
+            String collegeName =  jsonExcel.getString("collegeName");
+            String university =  jsonExcel.getString("university");
+            String state =  jsonExcel.getString("state");
+            String city =  jsonExcel.getString("city");
+            String gender =  jsonExcel.getString("gender");
+            String yearOfPassing = ""+ jsonExcel.getInt("yearOfPassing");
+            String tenthMarks = ""+ jsonExcel.getInt("tenthMarks");
+            String twelfthMarks = ""+ jsonExcel.getInt("twelfthMarks");
+            String graduationMarks = ""+ jsonExcel.getInt("graduationMarks");
+            String number = ""+ jsonExcel.getInt("number");
+            String status =  jsonExcel.getString("status");
+            String birthDate = ""+ jsonExcel.getInt("birthDate");
+            String graduation =  jsonExcel.getString("graduation");
+            String graduationBranch =  jsonExcel.getString("graduationBranch");
+
+            Role role = roleRepository.findByRoleName(urole)
+                    .orElseThrow(() -> new RoleNotFoundException(urole));
+            Batch batch = batchRepository.findByName(ubatch)
+                    .orElseThrow(() -> new BatchNotFoundException(ubatch));
+            try{
+                User request = userRepository.findByUsername(username)
+                        .orElseThrow(() -> new UsernameNotFoundException(username));
+                request.setBatch(batch);
+                request.setEmail(email);
+                request.setUsername(username);
+                request.setName(name);
+
+                request.setRole(role);
+                request.setSurname(surname);
+                request.setCollegeName(collegeName);
+                request.setUniversityName(university);
+                request.setState(state);
+                request.setCity(city);
+                request.setGender(gender);
+                request.setYearOfPassing(yearOfPassing);
+                request.setTenthMarks(tenthMarks);
+                request.setTwelfthMarks(twelfthMarks);
+                request.setGraduationMarks(graduationMarks);
+                request.setNumber(number);
+                request.setState(status);
+                request.setBirthDate(birthDate);
+                request.setGraduation(graduation);
+                request.setGraduationBranch(graduationBranch);
+                userRepository.save(request);
+            }catch(Exception UsernameNotFoundException){
+                User request = new User();
+                request.setBatch(batch);
+                request.setEmail(email);
+                request.setUsername(username);
+                request.setName(name);
+                request.setPassword(passwordEncoder.encode(password));
+                request.setRole(role);
+                request.setSurname(surname);
+                request.setCollegeName(collegeName);
+                request.setUniversityName(university);
+                request.setState(state);
+                request.setCity(city);
+                request.setGender(gender);
+                request.setYearOfPassing(yearOfPassing);
+                request.setTenthMarks(tenthMarks);
+                request.setTwelfthMarks(twelfthMarks);
+                request.setGraduationMarks(graduationMarks);
+                request.setNumber(number);
+                request.setState(status);
+                request.setBirthDate(birthDate);
+                request.setGraduation(graduation);
+                request.setGraduationBranch(graduationBranch);
+                userRepository.save(request);
+            }
+
+        }
+        return "Uploaded";
     }
 }

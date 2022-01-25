@@ -121,4 +121,10 @@ public class AuthController {
         refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
         return ResponseEntity.status(OK).body("Logout Successful!!!  Refresh Token Deleted Successfully!!");
     }
+    @PostMapping("/uploadExcel")
+    public String uploadExcel(@RequestBody String excelFile) {
+        System.out.println(excelFile);
+
+        return authService.uploadExcel(excelFile);
+    }
 }
