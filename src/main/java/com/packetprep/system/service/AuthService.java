@@ -374,7 +374,7 @@ public class AuthService {
             String email=jsonExcel.getString("email");
             String username = jsonExcel.getString("username");
             String name= jsonExcel.getString("name");
-            String password= jsonExcel.getString("password");
+
             String ubatch = jsonExcel.getString("batch");
             String urole= jsonExcel.getString("role");
             String surname = jsonExcel.getString("surname");
@@ -417,7 +417,7 @@ public class AuthService {
                 request.setTwelfthMarks(twelfthMarks);
                 request.setGraduationMarks(graduationMarks);
                 request.setNumber(number);
-                request.setState(status);
+                request.setStatus(status);
                 request.setBirthDate(birthDate);
                 request.setGraduation(graduation);
                 request.setGraduationBranch(graduationBranch);
@@ -428,7 +428,7 @@ public class AuthService {
                 request.setEmail(email);
                 request.setUsername(username);
                 request.setName(name);
-                request.setPassword(passwordEncoder.encode(password));
+                request.setPassword(passwordEncoder.encode("PacketPrep"));
                 request.setRole(role);
                 request.setSurname(surname);
                 request.setCollegeName(collegeName);
@@ -440,8 +440,9 @@ public class AuthService {
                 request.setTenthMarks(tenthMarks);
                 request.setTwelfthMarks(twelfthMarks);
                 request.setGraduationMarks(graduationMarks);
+                request.setEnabled(true);
                 request.setNumber(number);
-                request.setState(status);
+                request.setStatus(status);
                 request.setBirthDate(birthDate);
                 request.setGraduation(graduation);
                 request.setGraduationBranch(graduationBranch);
