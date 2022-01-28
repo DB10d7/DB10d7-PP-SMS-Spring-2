@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,4 +34,12 @@ public class StudentResponse {
     private String birthDate;
     private String graduation;
     private String graduationBranch;
+
+    private String fNumber;
+    private String fName;
+    private String address;
+    private Date jDate;
+    private String center;
+    private String comment;
+    private String uid;
 }

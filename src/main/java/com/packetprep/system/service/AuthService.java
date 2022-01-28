@@ -9,7 +9,10 @@ import com.packetprep.system.security.JwtProvider;
 import lombok.AllArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
+//import org.springframework.boot.context.event.ApplicationReadyEvent;
+//import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -87,6 +90,14 @@ public class AuthService {
             user.setGender(registerRequest.getGender());
             user.setGraduation(registerRequest.getGraduation());
             user.setGraduationBranch(registerRequest.getGraduationBranch());
+
+            user.setFName(registerRequest.getFName());
+            user.setFNumber(registerRequest.getFNumber());
+            user.setAddress(registerRequest.getAddress());
+            user.setJDate(registerRequest.getJDate());
+            user.setCenter(registerRequest.getCenter());
+            user.setComment(registerRequest.getComment());
+            user.setUid(registerRequest.getUid());
 
             /* End of complete User Part */
 
@@ -348,6 +359,7 @@ public class AuthService {
             }
         }
     }
+//    @EventListener(ApplicationReadyEvent.class)
     public String forgotPassword(String username){
         try{
             User user = userRepository.findByUsername(username)

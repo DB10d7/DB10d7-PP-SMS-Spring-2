@@ -22,6 +22,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
@@ -95,6 +97,7 @@ public class MailService {
 
             return response;
         }
+
     public MailResponse sendEmailForForgetPassword(MailRequest request){
         Map<String, Object> map = new HashMap<>();
         map.put("name",request.getName());

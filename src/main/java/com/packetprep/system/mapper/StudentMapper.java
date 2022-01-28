@@ -71,6 +71,15 @@ public class StudentMapper {
         studentResponse.setNumber(user.getNumber());
         studentResponse.setGraduation(user.getGraduation());
         studentResponse.setGraduationBranch(user.getGraduationBranch());
+
+        studentResponse.setFName(user.getFName());
+        studentResponse.setFNumber(user.getFNumber());
+        studentResponse.setCenter(user.getCenter());
+        studentResponse.setComment(user.getComment());
+        studentResponse.setUid(user.getUid());
+        studentResponse.setAddress(user.getAddress());
+        studentResponse.setJDate(user.getJDate());
+
         return studentResponse;
     }
 //    public StudentResponse mapFromStudentToDtoStudentDetails(User user) {

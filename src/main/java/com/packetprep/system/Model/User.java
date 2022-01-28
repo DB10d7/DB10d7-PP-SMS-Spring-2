@@ -10,6 +10,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -19,7 +20,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "pp_user")
+//@Table(name= "pp_user")
 public class User {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -75,4 +76,30 @@ public class User {
     private String graduation;
     @NotBlank
     private String graduationBranch;
+
+    @NotBlank
+    private String fName;
+    @NotBlank
+    private String fNumber;
+    @NotBlank
+    private String address;
+    @NotBlank
+    private Date jDate;
+    @NotBlank
+    private String center;
+    @NotBlank
+    private String comment;
+    @NotBlank
+    private String uid ;
+
+    @OneToOne( fetch = FetchType.LAZY)
+    private Agreement agreement;
+    @OneToOne( fetch = FetchType.LAZY)
+    private Resume resume;
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private PassportPhoto photo;
+    @OneToOne( fetch = FetchType.LAZY)
+    private StudentAadhar studentAadhar;
+    @OneToOne(fetch = FetchType.LAZY)
+    private FatherAadhar fatherAadhar;
 }
