@@ -1,10 +1,20 @@
 package com.packetprep.system.Model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
+@Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class StudentAadhar {
     @Id
     @Column(name = "id")

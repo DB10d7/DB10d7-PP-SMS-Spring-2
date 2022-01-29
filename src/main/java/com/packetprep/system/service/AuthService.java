@@ -276,6 +276,14 @@ public class AuthService {
         user.setBirthDate(registerRequest.getBirthDate());
         user.setGender(registerRequest.getGender());
 
+        user.setFName(registerRequest.getFName());
+        user.setFNumber(registerRequest.getFNumber());
+        user.setAddress(registerRequest.getAddress());
+        user.setJDate(registerRequest.getJDate());
+        user.setCenter(registerRequest.getCenter());
+        user.setComment(registerRequest.getComment());
+        user.setUid(registerRequest.getUid());
+
         /* End of complete User Part */
 
         userRepository.save(user);
