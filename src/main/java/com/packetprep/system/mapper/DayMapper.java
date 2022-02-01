@@ -22,6 +22,7 @@ public class DayMapper {
         day.setBatch(batch);
         day.setCreatedOn(Instant.now());
         day.setUpdatedOn(Instant.now());
+        day.setSessionName(dayRequest.getSessionName());
         return day;
     }
     public DayResponse mapFromDayToDto(Day day) {
@@ -33,6 +34,7 @@ public class DayMapper {
         dayResponse.setCreatedBy(day.getCreatedBy().getUsername());
         dayResponse.setBatchName(day.getBatch().getName());
         dayResponse.setDayName(day.getName());
+        dayResponse.setSessionName(day.getSessionName());
         return dayResponse;
     }
     public Day updateFromDtoToDay(DayRequest dayRequest, Batch batch, User user,Day day) {
@@ -44,6 +46,7 @@ public class DayMapper {
         day.setBatch(batch);
         day.setTopic(dayRequest.getTopic());
         day.setUpdatedOn(Instant.now());
+        day.setSessionName(dayRequest.getSessionName());
         return day;
     }
 }

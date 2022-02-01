@@ -15,6 +15,6 @@ public class DayResponse {
     private String batchName;
 
     private String topic;
-
+    private String sessionName;
 
 }

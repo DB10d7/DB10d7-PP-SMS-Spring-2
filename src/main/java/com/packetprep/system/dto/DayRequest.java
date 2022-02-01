@@ -17,5 +17,6 @@ public class DayRequest {
     private String description;
     private String createdBy;
 
+    private String sessionName;
     private String topic;
 }

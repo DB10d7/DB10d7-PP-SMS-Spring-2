@@ -28,6 +28,8 @@ public class Day {
     @Nullable
     private String url;
     @Nullable
+    private String sessionName;
+    @Nullable
     @Lob
     private String description;
     @Column
