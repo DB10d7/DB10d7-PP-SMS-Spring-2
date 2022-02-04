@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +15,7 @@ import java.util.Date;
 public class StudentResponse {
     private Long id;
     private String username;
+    private String uname;
     private String name;
     private String email;
     private String batch;
@@ -31,15 +33,15 @@ public class StudentResponse {
     private String graduationMarks;
     private String number;
     private String status;
-    private String birthDate;
+    private Date birthDate;
     private String graduation;
     private String graduationBranch;
 
-    private String fNumber;
-    private String fName;
-    private String address;
-    private Date jDate;
-    private String center;
-    private String comment;
-    private String uid;
+//    private String fNumber;
+//    private String fName;
+//    private String address;
+//    private Date jDate;
+//    private String center;
+//    private String comment;
+//    private String uid;
 }

@@ -85,6 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/days/studentsNotPresent").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
                 .antMatchers( HttpMethod.GET,"/api/days/by-batch/{name}").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN","STUDENT")
                 .antMatchers( HttpMethod.DELETE,"/api/days/**").hasAnyAuthority("TRAINER","SUPER-ADMIN","ADMIN")
+                .antMatchers( HttpMethod.DELETE,"/api/batch/**").hasAnyAuthority("SUPER-ADMIN")
                 .antMatchers( HttpMethod.GET,"/api/days/**").hasAnyAuthority("TRAINER","SUPER-ADMIN","ADMIN")
                 .antMatchers(HttpMethod.GET,"/api/students/**").hasAnyAuthority("STUDENT","ADMIN","TRAINER","SUPER-ADMIN")
 

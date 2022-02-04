@@ -49,7 +49,12 @@ public class BatchController {
                 .status(HttpStatus.OK)
                 .body(batchService.getAll());
     }
-
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+        batchService.deleteBatch(id);
+        return new ResponseEntity<>("Batch Successfully Deleted",
+                HttpStatus.OK);
+    }
   /*  @GetMapping("/{id}")
     public ResponseEntity<BatchResponse> getBatch(@PathVariable Long id) {
         return ResponseEntity

@@ -1,12 +1,17 @@
 package com.packetprep.system.service;
 import com.packetprep.system.Model.Batch;
+import com.packetprep.system.Model.Day;
 import com.packetprep.system.Model.User;
 import com.packetprep.system.dto.BatchRequest;
 import com.packetprep.system.dto.BatchResponse;
+import com.packetprep.system.dto.DayResponse;
+import com.packetprep.system.dto.StudentResponse;
 import com.packetprep.system.exception.BatchNotFoundException;
+import com.packetprep.system.exception.DayNotFoundException;
 import com.packetprep.system.exception.SpringPPSystemException;
 import com.packetprep.system.mapper.BatchesMapper;
 import com.packetprep.system.repository.BatchRepository;
+import com.packetprep.system.repository.DayRepository;
 import com.packetprep.system.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +32,9 @@ public class BatchService {
     private final BatchesMapper batchMapper;
     private final AuthService authService;
     private final UserRepository userRepository;
+    private final StudentService studentService;
+    private final DayService dayService;
+    private final DayRepository dayRepository;
 
     @Transactional
     public String save(BatchRequest batchRequest) {
@@ -68,6 +76,27 @@ public class BatchService {
         Batch batch = batchRepository.findByName(batchName)
                 .orElseThrow(() -> new BatchNotFoundException(batchName));
         return batchMapper.mapFromBatchToDto(batch);
+    }
+    public void deleteBatch(Long id) {
+        Batch batch = batchRepository.findById(id)
+                .orElseThrow(() -> new BatchNotFoundException("Batch Not Found"));
+        List<DayResponse> days = dayService.getDaysByBatch(batch.getName());
+        if(days.isEmpty() == false){
+            for(DayResponse dy: days){
+                Day day = dayRepository.findByName(dy.getDayName())
+                        .orElseThrow(() -> new DayNotFoundException(dy.getDayName()));
+                dayService.deleteDay(day.getDayId());
+            }
+        }
+        List<StudentResponse> students = studentService.getStudentsByBatch(batch.getName());
+        if(students.isEmpty() == false){
+            for(StudentResponse stu: students){
+                User student = userRepository.findByUsername(stu.getUsername())
+                        .orElseThrow(() -> new UsernameNotFoundException(stu.getUsername()));
+                authService.deleteById(student.getUserId());
+            }
+        }
+        batchRepository.delete(batch);
     }
    /* public Batch mapFromDtoToBatch(BatchDto batchDto, User user) {
         Batch batch = new Batch();

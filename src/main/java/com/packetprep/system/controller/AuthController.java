@@ -27,20 +27,25 @@ public class AuthController {
         return new ResponseEntity<>(authService.signup(registerRequest),
                 HttpStatus.OK);
     }
+    @PostMapping("/uploadApi")
+    public ResponseEntity<String> uploadDataFromApi(@RequestBody RegisterRequest registerRequest) throws IOException {
+        return new ResponseEntity<>(authService.uploadDataFromApi(registerRequest),
+                HttpStatus.OK);
+    }
     @GetMapping("/hello")
     public String Hello(){
         return("Hello");
     }
 
     @PutMapping("/update/{username}")
-    public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest,@PathVariable String username) {
-        authService.update(registerRequest,username);
+    public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest) {
+        authService.update(registerRequest);
         return new ResponseEntity<>("User Update Successful",
                 HttpStatus.OK);
     }
     @PutMapping("/updateProfile/{username}")
-    public ResponseEntity<String> updateProfile(@RequestBody RegisterRequest registerRequest,@PathVariable String username) {
-        authService.update(registerRequest,username);
+    public ResponseEntity<String> updateProfile(@RequestBody RegisterRequest registerRequest) {
+        authService.update(registerRequest);
         return new ResponseEntity<>("User Update Successful",
                 HttpStatus.OK);
     }

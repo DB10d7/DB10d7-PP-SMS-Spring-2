@@ -9,8 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.time.Instant;
 import java.util.Date;
+import java.time.Instant;
+
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -27,6 +28,8 @@ public class User {
     private Long userId;
     @NotBlank(message = "Username is required")
     private String username;
+    @NotBlank(message = "Name is required")
+    private String uname;
     @NotBlank(message = "Name is required")
     private String name;
     @NotBlank(message = "Password is required")
@@ -59,7 +62,7 @@ public class User {
     @NotBlank
     private String city;
     @NotBlank
-    private String birthDate;
+    private Date birthDate;
     @NotBlank
     private String tenthMarks;
     @NotBlank
@@ -77,29 +80,29 @@ public class User {
     @NotBlank
     private String graduationBranch;
 
-    @NotBlank
-    private String fName;
-    @NotBlank
-    private String fNumber;
-    @NotBlank
-    private String address;
-    @NotBlank
-    private Date jDate;
-    @NotBlank
-    private String center;
-    @NotBlank
-    private String comment;
-    @NotBlank
-    private String uid ;
-
-    @OneToOne( fetch = FetchType.LAZY)
-    private Agreement agreement;
-    @OneToOne( fetch = FetchType.LAZY)
-    private Resume resume;
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private PassportPhoto photo;
-    @OneToOne( fetch = FetchType.LAZY)
-    private StudentAadhar studentAadhar;
-    @OneToOne(fetch = FetchType.LAZY)
-    private FatherAadhar fatherAadhar;
+//    @NotBlank
+//    private String fName;
+//    @NotBlank
+//    private String fNumber;
+//    @NotBlank
+//    private String address;
+//    @NotBlank
+//    private Date jDate;
+//    @NotBlank
+//    private String center;
+//    @NotBlank
+//    private String comment;
+//    @NotBlank
+//    private String uid ;
+//
+//    @OneToOne( fetch = FetchType.LAZY)
+//    private Agreement agreement;
+//    @OneToOne( fetch = FetchType.LAZY)
+//    private Resume resume;
+//    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+//    private PassportPhoto photo;
+//    @OneToOne( fetch = FetchType.LAZY)
+//    private StudentAadhar studentAadhar;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    private FatherAadhar fatherAadhar;
 }

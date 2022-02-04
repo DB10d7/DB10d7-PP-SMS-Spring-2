@@ -12,7 +12,6 @@ import org.json.JSONObject;
 //import org.springframework.boot.context.event.ApplicationReadyEvent;
 //import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,6 +64,7 @@ public class AuthService {
             Batch batch = batchRepository.findByName(registerRequest.getBatch())
                     .orElseThrow(() -> new BatchNotFoundException(registerRequest.getBatch()));
             user.setUsername(registerRequest.getUsername());
+            user.setUname(registerRequest.getUname());
             user.setEmail(registerRequest.getEmail());
             user.setName(registerRequest.getName());
             user.setRole(role);
@@ -91,13 +91,13 @@ public class AuthService {
             user.setGraduation(registerRequest.getGraduation());
             user.setGraduationBranch(registerRequest.getGraduationBranch());
 
-            user.setFName(registerRequest.getFName());
-            user.setFNumber(registerRequest.getFNumber());
-            user.setAddress(registerRequest.getAddress());
-            user.setJDate(registerRequest.getJDate());
-            user.setCenter(registerRequest.getCenter());
-            user.setComment(registerRequest.getComment());
-            user.setUid(registerRequest.getUid());
+//            user.setFName(registerRequest.getFName());
+//            user.setFNumber(registerRequest.getFNumber());
+//            user.setAddress(registerRequest.getAddress());
+//            user.setJDate(registerRequest.getJDate());
+//            user.setCenter(registerRequest.getCenter());
+//            user.setComment(registerRequest.getComment());
+//            user.setUid(registerRequest.getUid());
 
             /* End of complete User Part */
 
@@ -111,6 +111,67 @@ public class AuthService {
             mailRequest.setSubject("Account Activation Email");
             mailService.sendEmailForActivation(mailRequest);
             return "User Registered Successfully";
+        }
+    }
+    public String uploadDataFromApi(RegisterRequest registerRequest) throws IOException {
+        User user = new User();
+        try{
+            User prevUser = userRepository.findByUsername(registerRequest.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException(registerRequest.getUsername()));
+            return "UserName Already Taken";
+        }catch (Exception UsernameNotFoundException) {
+            Role role = roleRepository.findByRoleName(registerRequest.getRole())
+                    .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
+            Batch batch = batchRepository.findByName(registerRequest.getBatch())
+                    .orElseThrow(() -> new BatchNotFoundException(registerRequest.getBatch()));
+            user.setUsername(registerRequest.getUsername());
+            user.setUname(registerRequest.getUname());
+            user.setEmail(registerRequest.getEmail());
+            user.setName(registerRequest.getName());
+            user.setRole(role);
+            user.setBatch(batch);
+            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+            user.setCreated(Instant.now());
+            user.setEnabled(true);
+
+            /* Start Complete User Part */
+
+            user.setSurname(registerRequest.getSurname());
+            user.setStatus(registerRequest.getStatus());
+            user.setTenthMarks(registerRequest.getTenthMarks());
+            user.setTwelfthMarks(registerRequest.getTwelfthMarks());
+            user.setGraduationMarks(registerRequest.getGraduationMarks());
+            user.setYearOfPassing(registerRequest.getYearOfPassing());
+            user.setState(registerRequest.getState());
+            user.setCity(registerRequest.getCity());
+            user.setNumber(registerRequest.getNumber());
+            user.setCollegeName(registerRequest.getCollegeName());
+            user.setUniversityName(registerRequest.getUniversity());
+            user.setBirthDate(registerRequest.getBirthDate());
+            user.setGender(registerRequest.getGender());
+            user.setGraduation(registerRequest.getGraduation());
+            user.setGraduationBranch(registerRequest.getGraduationBranch());
+
+//            user.setFName(registerRequest.getFName());
+//            user.setFNumber(registerRequest.getFNumber());
+//            user.setAddress(registerRequest.getAddress());
+//            user.setJDate(registerRequest.getJDate());
+//            user.setCenter(registerRequest.getCenter());
+//            user.setComment(registerRequest.getComment());
+//            user.setUid(registerRequest.getUid());
+
+            /* End of complete User Part */
+
+            userRepository.save(user);
+            return "User Registered Successfully";
+//            String token = generateVerificationToken(user);
+//            MailRequest mailRequest = new MailRequest();
+//            mailRequest.setTo(registerRequest.getEmail());
+//            mailRequest.setName(registerRequest.getUsername());
+//            mailRequest.setToken(token);
+//            mailRequest.setSubject("Account Activation Email");
+//            mailService.sendEmailForActivation(mailRequest);
+//            return "User Registered Successfully";
         }
     }
     @Transactional
@@ -247,14 +308,15 @@ public class AuthService {
                 .build();
     }
 
-    public void update(RegisterRequest registerRequest, String username) {
-        User user = userRepository.findByUsername(username)
+    public void update(RegisterRequest registerRequest) {
+        User user = userRepository.findByUsername(registerRequest.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(registerRequest.getUsername()));
         Role role = roleRepository.findByRoleName(registerRequest.getRole())
                 .orElseThrow(() -> new RoleNotFoundException(registerRequest.getRole()));
         Batch batch = batchRepository.findByName(registerRequest.getBatch())
                 .orElseThrow(() -> new BatchNotFoundException(registerRequest.getBatch()));
         user.setUsername(registerRequest.getUsername());
+        user.setUname(registerRequest.getUname());
         user.setEmail(registerRequest.getEmail());
         user.setName(registerRequest.getName());
         user.setRole(role);
@@ -276,20 +338,20 @@ public class AuthService {
         user.setBirthDate(registerRequest.getBirthDate());
         user.setGender(registerRequest.getGender());
 
-        user.setFName(registerRequest.getFName());
-        user.setFNumber(registerRequest.getFNumber());
-        user.setAddress(registerRequest.getAddress());
-        user.setJDate(registerRequest.getJDate());
-        user.setCenter(registerRequest.getCenter());
-        user.setComment(registerRequest.getComment());
-        user.setUid(registerRequest.getUid());
+//        user.setFName(registerRequest.getFName());
+//        user.setFNumber(registerRequest.getFNumber());
+//        user.setAddress(registerRequest.getAddress());
+//        user.setJDate(registerRequest.getJDate());
+//        user.setCenter(registerRequest.getCenter());
+//        user.setComment(registerRequest.getComment());
+//        user.setUid(registerRequest.getUid());
 
         /* End of complete User Part */
 
         userRepository.save(user);
 
     }
-    public void updateProfile(RegisterRequest registerRequest,String username) {
+    public void updateProfile(RegisterRequest registerRequest) {
         User user = userRepository.findByUsername(getCurrentUser().getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(registerRequest.getUsername()));
         Role role = roleRepository.findByRoleName(registerRequest.getRole())
@@ -391,27 +453,28 @@ public class AuthService {
         for(int i=0;i<excel.length();i++){
            JSONObject jsonExcel= excel.getJSONObject(i);
 
-            String email=jsonExcel.getString("email");
+            String email= (jsonExcel.has("email"))?jsonExcel.getString("email"):"";
             String username = jsonExcel.getString("username");
-            String name= jsonExcel.getString("name");
+            String uname= (jsonExcel.has("uname"))?jsonExcel.getString("uname"):"";
+            String name= (jsonExcel.has("name"))?jsonExcel.getString("name"):"";
 
             String ubatch = jsonExcel.getString("batch");
             String urole= jsonExcel.getString("role");
-            String surname = jsonExcel.getString("surname");
-            String collegeName =  jsonExcel.getString("collegeName");
-            String university =  jsonExcel.getString("university");
-            String state =  jsonExcel.getString("state");
-            String city =  jsonExcel.getString("city");
-            String gender =  jsonExcel.getString("gender");
-            String yearOfPassing = ""+ jsonExcel.getInt("yearOfPassing");
-            String tenthMarks = ""+ jsonExcel.getInt("tenthMarks");
-            String twelfthMarks = ""+ jsonExcel.getInt("twelfthMarks");
-            String graduationMarks = ""+ jsonExcel.getInt("graduationMarks");
-            String number = ""+ jsonExcel.getInt("number");
-            String status =  jsonExcel.getString("status");
-            String birthDate = ""+ jsonExcel.getInt("birthDate");
-            String graduation =  jsonExcel.getString("graduation");
-            String graduationBranch =  jsonExcel.getString("graduationBranch");
+            String surname = (jsonExcel.has("surname"))?jsonExcel.getString("surname"):"";
+            String collegeName =  (jsonExcel.has("collegeName"))?jsonExcel.getString("collegeName"):"";
+            String university =  (jsonExcel.has("university"))?jsonExcel.getString("university"):"";
+            String state =  (jsonExcel.has("state"))?jsonExcel.getString("state"):"";
+            String city =  (jsonExcel.has("city"))?jsonExcel.getString("city"):"";
+            String gender =  (jsonExcel.has("gender"))?jsonExcel.getString("gender"):"";
+            String yearOfPassing = (jsonExcel.has("yearOfPassing"))?""+jsonExcel.getString("gender"):"";
+            String tenthMarks = (jsonExcel.has("tenthMarks"))?""+ jsonExcel.getInt("tenthMarks"):"";
+            String twelfthMarks = (jsonExcel.has("twelfthMarks"))?""+ jsonExcel.getInt("twelfthMarks"):"";
+            String graduationMarks = (jsonExcel.has("graduationMarks"))?""+ jsonExcel.getInt("graduationMarks"):"";
+            String number = (jsonExcel.has("number"))?""+ jsonExcel.getLong("number"):"";
+            String status =  (jsonExcel.has("status"))?jsonExcel.getString("status"):"";
+      //      String birthDate = jsonExcel.getString("birthDate");
+            String graduation =  (jsonExcel.has("graduation"))?jsonExcel.getString("status"):"";
+            String graduationBranch =  (jsonExcel.has("graduationBranch"))?jsonExcel.getString("graduationBranch"):"";
 
             Role role = roleRepository.findByRoleName(urole)
                     .orElseThrow(() -> new RoleNotFoundException(urole));
@@ -423,6 +486,7 @@ public class AuthService {
                 request.setBatch(batch);
                 request.setEmail(email);
                 request.setUsername(username);
+                request.setUname(uname);
                 request.setName(name);
 
                 request.setRole(role);
@@ -438,7 +502,7 @@ public class AuthService {
                 request.setGraduationMarks(graduationMarks);
                 request.setNumber(number);
                 request.setStatus(status);
-                request.setBirthDate(birthDate);
+       //         request.setBirthDate(birthDate);
                 request.setGraduation(graduation);
                 request.setGraduationBranch(graduationBranch);
                 userRepository.save(request);
@@ -447,10 +511,11 @@ public class AuthService {
                 request.setBatch(batch);
                 request.setEmail(email);
                 request.setUsername(username);
+                request.setUname(uname);
                 request.setName(name);
                 request.setPassword(passwordEncoder.encode("PacketPrep"));
                 request.setRole(role);
-                request.setSurname(surname);
+                request.setSurname("NA");
                 request.setCollegeName(collegeName);
                 request.setUniversityName(university);
                 request.setState(state);
@@ -463,7 +528,7 @@ public class AuthService {
                 request.setEnabled(true);
                 request.setNumber(number);
                 request.setStatus(status);
-                request.setBirthDate(birthDate);
+        //        request.setBirthDate(birthDate);
                 request.setGraduation(graduation);
                 request.setGraduationBranch(graduationBranch);
                 userRepository.save(request);

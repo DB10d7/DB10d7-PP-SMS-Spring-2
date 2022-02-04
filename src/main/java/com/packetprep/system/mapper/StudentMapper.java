@@ -1,18 +1,8 @@
 package com.packetprep.system.mapper;
 
 import com.packetprep.system.Model.User;
-import com.packetprep.system.dto.AuthenticationResponse;
 import com.packetprep.system.dto.StudentResponse;
-import com.packetprep.system.service.ImageService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.mapstruct.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.multipart.MultipartFile;
-
-
-import java.io.IOException;
-import java.time.Instant;
 
 
 @Mapper(componentModel = "spring")
@@ -52,6 +42,7 @@ public class StudentMapper {
         StudentResponse studentResponse = new StudentResponse();
         studentResponse.setId(user.getUserId());
         studentResponse.setUsername(user.getUsername());
+        studentResponse.setUname(user.getUname());
         studentResponse.setName(user.getName());
         studentResponse.setEmail(user.getEmail());
         studentResponse.setRole(user.getRole().getRoleName());
@@ -72,13 +63,13 @@ public class StudentMapper {
         studentResponse.setGraduation(user.getGraduation());
         studentResponse.setGraduationBranch(user.getGraduationBranch());
 
-        studentResponse.setFName(user.getFName());
-        studentResponse.setFNumber(user.getFNumber());
-        studentResponse.setCenter(user.getCenter());
-        studentResponse.setComment(user.getComment());
-        studentResponse.setUid(user.getUid());
-        studentResponse.setAddress(user.getAddress());
-        studentResponse.setJDate(user.getJDate());
+//        studentResponse.setFName(user.getFName());
+//        studentResponse.setFNumber(user.getFNumber());
+//        studentResponse.setCenter(user.getCenter());
+//        studentResponse.setComment(user.getComment());
+//        studentResponse.setUid(user.getUid());
+//        studentResponse.setAddress(user.getAddress());
+//        studentResponse.setJDate(user.getJDate());
 
         return studentResponse;
     }
