@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/image/get/{username}").authenticated()
                 .antMatchers("/api/auth/uploadExcel").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
                 .antMatchers("/api/auth/get/trainersList").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
-                .antMatchers("/api/auth/update/{username}").hasAnyAuthority("SUPER-ADMIN")
+                .antMatchers("/api/auth/update").hasAnyAuthority("SUPER-ADMIN","ADMIN","TRAINER")
                 .antMatchers(HttpMethod.DELETE,"/api/auth/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
                 .antMatchers("/api/auth/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
                 .antMatchers( HttpMethod.POST,"/api/days/addStudent").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")

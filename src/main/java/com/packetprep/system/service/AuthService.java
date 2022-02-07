@@ -309,6 +309,8 @@ public class AuthService {
     }
 
     public void update(RegisterRequest registerRequest) {
+        System.out.print("hello");
+
         User user = userRepository.findByUsername(registerRequest.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(registerRequest.getUsername()));
         Role role = roleRepository.findByRoleName(registerRequest.getRole())
@@ -337,6 +339,8 @@ public class AuthService {
         user.setUniversityName(registerRequest.getUniversity());
         user.setBirthDate(registerRequest.getBirthDate());
         user.setGender(registerRequest.getGender());
+        user.setGraduationBranch(registerRequest.getGraduationBranch());
+        user.setGraduation(registerRequest.getGraduation());
 
 //        user.setFName(registerRequest.getFName());
 //        user.setFNumber(registerRequest.getFNumber());

@@ -41,6 +41,8 @@ public class User {
     private Role role;
     @ManyToMany(fetch = LAZY, mappedBy = "user")
     private List<Day> day;
+    @ManyToMany(fetch = LAZY, mappedBy = "user")
+    private List<Jobs> jobs;
     @ManyToOne(fetch = LAZY)
     private Batch batch;
     private Instant created;

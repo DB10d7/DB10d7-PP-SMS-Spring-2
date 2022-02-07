@@ -37,13 +37,13 @@ public class AuthController {
         return("Hello");
     }
 
-    @PutMapping("/update/{username}")
+    @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody RegisterRequest registerRequest) {
         authService.update(registerRequest);
         return new ResponseEntity<>("User Update Successful",
                 HttpStatus.OK);
     }
-    @PutMapping("/updateProfile/{username}")
+    @PutMapping("/updateProfile")
     public ResponseEntity<String> updateProfile(@RequestBody RegisterRequest registerRequest) {
         authService.update(registerRequest);
         return new ResponseEntity<>("User Update Successful",
