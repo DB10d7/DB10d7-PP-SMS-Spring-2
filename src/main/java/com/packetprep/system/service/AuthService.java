@@ -49,6 +49,8 @@ public class AuthService {
     private final DayRepository dayRepository;
     private final ImageService imageService;
     private final ImageRepository imageRepository;
+    private final JobService jobService;
+    private final JobRepository jobRepository;
 
 
 
@@ -398,6 +400,12 @@ public class AuthService {
         if(prts.isEmpty() == false){
             for(PasswordResetToken prt: prts){
                 passwordResetTokenRepository.delete(prt);
+            }
+        }
+        List<Jobs> jobs = jobRepository.findByUser(user);
+        if(jobs.isEmpty() == false){
+            for(Jobs job:jobs){
+                jobService.deleteJob(job.getId());
             }
         }
         try{

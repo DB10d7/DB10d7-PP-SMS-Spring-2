@@ -38,4 +38,8 @@ public class JobController {
     public ResponseEntity<List<JobResponse>> getDayByStudent(@PathVariable String username) {
         return status(HttpStatus.OK).body(jobService.getJobByStudent(username));
     }
+    @DeleteMapping("delete/{id}")
+    public String deleteJob(@PathVariable Long id){
+        return (jobService.deleteJob(id));
+    }
 }

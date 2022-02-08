@@ -119,12 +119,19 @@ public class DayService {
         }
         return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
     }
-   public void addStudent(StudentDayMappingDto studentDayMappingDto){
+   public String addStudent(StudentDayMappingDto studentDayMappingDto){
         User student = userRepository.findByUsername(studentDayMappingDto.getStudentName())
                 .orElseThrow(() -> new UsernameNotFoundException(studentDayMappingDto.getStudentName()));
         Day day = dayRepository.findByName(studentDayMappingDto.getDayName())
                 .orElseThrow(() -> new DayNotFoundException(studentDayMappingDto.getDayName()));
         day.getUser().add(student);
+//        List<User> users = userRepository.findAllByDay(day);
+//        for(User us: users){
+//            if(!us.equals(student)){
+//
+//            }
+//        }
+        return "Student Added";
     }
     public void removeStudent(StudentDayMappingDto studentDayMappingDto){
         User student = userRepository.findByUsername(studentDayMappingDto.getStudentName())
@@ -132,6 +139,13 @@ public class DayService {
         Day day = dayRepository.findByName(studentDayMappingDto.getDayName())
                 .orElseThrow(() -> new DayNotFoundException(studentDayMappingDto.getDayName()));
         day.getUser().remove(student);
+//        List<User> users = userRepository.findAllByDay(day);
+//        for(User us: users){
+//            if(us.equals(student)){
+//                day.getUser().remove(student);
+//            }
+//        }
+
     }
     public void deleteDay(Long id) {
         Day day = dayRepository.findById(id)

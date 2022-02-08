@@ -31,9 +31,9 @@ public class DayController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @PostMapping("/addStudent")
-    public ResponseEntity<Void> addStudent(@RequestBody StudentDayMappingDto studentDayMappingDto) {
-        dayService.addStudent(studentDayMappingDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public String addStudent(@RequestBody StudentDayMappingDto studentDayMappingDto) {
+       return dayService.addStudent(studentDayMappingDto);
+
     }
     @PostMapping("/removeStudent")
     public ResponseEntity<String> removeStudent(@RequestBody StudentDayMappingDto studentDayMappingDto) {

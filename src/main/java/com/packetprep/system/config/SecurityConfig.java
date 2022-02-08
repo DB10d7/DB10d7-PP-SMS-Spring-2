@@ -76,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/updateProfile/{username}").authenticated()
                 .antMatchers("/api/user/image/update").authenticated()
                 .antMatchers("/api/user/image/get/{username}").authenticated()
+                .antMatchers("/api/jobs/**").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
                 .antMatchers("/api/auth/uploadExcel").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
                 .antMatchers("/api/auth/get/trainersList").hasAnyAuthority("ADMIN","TRAINER","SUPER-ADMIN")
                 .antMatchers("/api/auth/update").hasAnyAuthority("SUPER-ADMIN","ADMIN","TRAINER")

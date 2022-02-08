@@ -1,5 +1,7 @@
 package com.packetprep.system.service;
 
+
+
 import com.packetprep.system.Model.Jobs;
 import com.packetprep.system.Model.User;
 import com.packetprep.system.dto.JobRequest;
@@ -32,6 +34,7 @@ public class JobService {
             User user = userRepository.findByUsername(jobRequest.getUserId())
                     .orElseThrow(() -> new UsernameNotFoundException(jobRequest.getUserId()));
             jobRepository.save(jobMapper.mapFromDtoToJob(jobRequest,user));
+
             return "Job Created";
         }catch(Exception UsernameNotFoundException){
             return "User Not Found";
@@ -58,5 +61,17 @@ public class JobService {
                 .orElseThrow(() -> new UsernameNotFoundException(username));
         List<Jobs> jobs = jobRepository.findByUser(user);
         return jobs.stream().map(jobMapper::mapFromJobToDto).collect(toList());
+    }
+
+    public String deleteJob(Long id){
+        try{
+            Jobs job = jobRepository.findById(id)
+                    .orElseThrow(() -> new JobNotFoundException("Job Not Found"));
+            jobRepository.delete(job);
+            return "Job Successfully Deleted";
+        }catch(Exception JobNotFoundException){
+            return "Job Not Found";
+        }
+
     }
 }

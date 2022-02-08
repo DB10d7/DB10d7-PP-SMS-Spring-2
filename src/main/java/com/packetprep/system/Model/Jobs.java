@@ -30,10 +30,6 @@ public class Jobs {
     private String title;
     @NotBlank(message = "JobApplied is required")
     private Date appliedAt;
-    @ManyToMany(fetch = LAZY)
-    @JoinTable(name = "jobs_user",
-            joinColumns = { @JoinColumn(name = "job_id")},
-            inverseJoinColumns = { @JoinColumn (name = "user_id")}
-    )
+    @ManyToOne(fetch = LAZY)
     private User user;
 }
