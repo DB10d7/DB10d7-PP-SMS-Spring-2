@@ -116,7 +116,7 @@ public class StudentService {
            studentRepository.save(student);
        } */
     @Transactional
-    public List<StudentResponse> showAllStudent() {
+    public List<StudentListResponse> showAllStudent() {
         List<User> users = userRepository.findAll();
         List<User> students = new ArrayList<>();
         for(User student: users){
@@ -124,7 +124,7 @@ public class StudentService {
                 students.add(student);
             }
         }
-        return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+        return students.stream().map(studentMapper::mapFromStudentToStudentListDto).collect(toList());
     }
 
     @Transactional
@@ -135,18 +135,18 @@ public class StudentService {
          return sm;
     }
     @Transactional(readOnly = true)
-    public List<StudentResponse>getStudentsByBatch(String batchName) {
+    public List<StudentListResponse>getStudentsByBatch(String batchName) {
         Batch batch = batchRepository.findByName(batchName)
                 .orElseThrow(() -> new BatchNotFoundException(batchName));
         List<User> students = userRepository.findAllByBatch(batch);
-        return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+        return students.stream().map(studentMapper::mapFromStudentToStudentListDto).collect(toList());
     }
     @Transactional(readOnly = true)
-    public List<StudentResponse> getStudentsByDay(String dayName) {
+    public List<StudentListResponse> getStudentsByDay(String dayName) {
         Day day = dayRepository.findByName(dayName)
                 .orElseThrow(() -> new DayNotFoundException(dayName));
         List<User> students = userRepository.findAllByDay(day);
-        return students.stream().map(studentMapper::mapFromStudentToDto).collect(toList());
+        return students.stream().map(studentMapper::mapFromStudentToStudentListDto).collect(toList());
     }
     @Transactional(readOnly = true)
     public List<DayResponse> getDaysByStudent(String studentName) {

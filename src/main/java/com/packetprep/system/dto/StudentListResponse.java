@@ -1,5 +1,6 @@
 package com.packetprep.system.dto;
-import com.packetprep.system.Model.User;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,12 +10,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BatchResponse {
+public class StudentListResponse {
+
     private Long id;
+    private String username;
+    private String uname;
     private String name;
-    private String description;
-    private Integer numberOfStudents;
-    private Integer numberOfDays;
-    //  private Integer numberOfDays;
-//    private String createdBy;
+    private String email;
+    private String batch;
+    private String number;
+    private Integer daysAttended;
+    private Integer totalDays;
 }

@@ -2,10 +2,7 @@ package com.packetprep.system.service;
 import com.packetprep.system.Model.Batch;
 import com.packetprep.system.Model.Day;
 import com.packetprep.system.Model.User;
-import com.packetprep.system.dto.BatchRequest;
-import com.packetprep.system.dto.BatchResponse;
-import com.packetprep.system.dto.DayResponse;
-import com.packetprep.system.dto.StudentResponse;
+import com.packetprep.system.dto.*;
 import com.packetprep.system.exception.BatchNotFoundException;
 import com.packetprep.system.exception.DayNotFoundException;
 import com.packetprep.system.exception.SpringPPSystemException;
@@ -88,9 +85,9 @@ public class BatchService {
                 dayService.deleteDay(day.getDayId());
             }
         }
-        List<StudentResponse> students = studentService.getStudentsByBatch(batch.getName());
+        List<StudentListResponse> students = studentService.getStudentsByBatch(batch.getName());
         if(students.isEmpty() == false){
-            for(StudentResponse stu: students){
+            for(StudentListResponse stu: students){
                 User student = userRepository.findByUsername(stu.getUsername())
                         .orElseThrow(() -> new UsernameNotFoundException(stu.getUsername()));
                 authService.deleteById(student.getUserId());

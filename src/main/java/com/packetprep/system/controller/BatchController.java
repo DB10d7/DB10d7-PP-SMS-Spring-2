@@ -1,9 +1,6 @@
 package com.packetprep.system.controller;
-import com.packetprep.system.dto.AuthenticationResponse;
-import com.packetprep.system.dto.BatchRequest;
+import com.packetprep.system.dto.*;
 
-import com.packetprep.system.dto.BatchResponse;
-import com.packetprep.system.dto.StudentResponse;
 import com.packetprep.system.service.BatchService;
 import com.packetprep.system.service.StudentService;
 import lombok.AllArgsConstructor;
@@ -38,7 +35,7 @@ public class BatchController {
                HttpStatus.OK);
     }
     @GetMapping("/{batchName}/get/allStudents")
-    public ResponseEntity<List<StudentResponse>> getAllStudentsByBatch(@PathVariable String batchName) {
+    public ResponseEntity<List<StudentListResponse>> getAllStudentsByBatch(@PathVariable String batchName) {
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByBatch(batchName));
     }

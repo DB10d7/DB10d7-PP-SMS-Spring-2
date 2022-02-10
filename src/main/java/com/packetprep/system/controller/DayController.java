@@ -41,7 +41,7 @@ public class DayController {
         return new ResponseEntity<>("Student Deleted Successful",HttpStatus.OK);
     }
     @GetMapping("/{dayName}/get/allStudents")
-    public ResponseEntity<List<StudentResponse>> getAllStudentsByDay(@PathVariable String dayName){
+    public ResponseEntity<List<StudentListResponse>> getAllStudentsByDay(@PathVariable String dayName){
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByDay(dayName));
     }

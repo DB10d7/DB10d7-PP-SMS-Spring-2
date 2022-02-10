@@ -40,7 +40,7 @@ public class StudentController {
         return new ResponseEntity<>("Account Activated Successfully", HttpStatus.OK);
     } */
     @GetMapping
-    public ResponseEntity<List<StudentResponse>> getAllStudents() {
+    public ResponseEntity<List<StudentListResponse>> getAllStudents() {
         return ResponseEntity.status(OK)
                 .body(studentService.showAllStudent());
     }
@@ -51,13 +51,13 @@ public class StudentController {
     }
 
     @GetMapping("/by-batch/{batchName}")
-    public ResponseEntity<List<StudentResponse>> getAllStudentsByBatch(@PathVariable String batchName) {
+    public ResponseEntity<List<StudentListResponse>> getAllStudentsByBatch(@PathVariable String batchName) {
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByBatch(batchName));
     }
 
     @GetMapping("/by-day/{dayName}")
-    public ResponseEntity<List<StudentResponse>> getAllStudentsByDay(@PathVariable String dayName){
+    public ResponseEntity<List<StudentListResponse>> getAllStudentsByDay(@PathVariable String dayName){
         return ResponseEntity.status(OK)
                 .body(studentService.getStudentsByDay(dayName));
     }

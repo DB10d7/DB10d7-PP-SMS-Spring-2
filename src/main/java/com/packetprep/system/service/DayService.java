@@ -150,9 +150,9 @@ public class DayService {
     public void deleteDay(Long id) {
         Day day = dayRepository.findById(id)
                 .orElseThrow(() -> new DayNotFoundException("Day Not Found"));
-        List<StudentResponse> students = studentService.getStudentsByDay(day.getName());
+        List<StudentListResponse> students = studentService.getStudentsByDay(day.getName());
         if(students.isEmpty() == false){
-            for(StudentResponse stu: students){
+            for(StudentListResponse stu: students){
                 User student = userRepository.findByUsername(stu.getUsername())
                         .orElseThrow(() -> new UsernameNotFoundException(stu.getUsername()));
                 day.getUser().remove(student);

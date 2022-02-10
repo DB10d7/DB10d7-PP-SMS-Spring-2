@@ -1,8 +1,16 @@
 package com.packetprep.system.mapper;
 
+import com.packetprep.system.Model.Batch;
+import com.packetprep.system.Model.Day;
 import com.packetprep.system.Model.User;
+import com.packetprep.system.dto.StudentListResponse;
 import com.packetprep.system.dto.StudentResponse;
+import com.packetprep.system.repository.DayRepository;
+import com.packetprep.system.repository.UserRepository;
 import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 
 @Mapper(componentModel = "spring")
@@ -10,6 +18,11 @@ public class StudentMapper {
 
 //    @Autowired
 //    private ImageService imageService;
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private DayRepository dayRepository;
 
   /*  public Student mapFromDtoToStudent(StudentDto studentDto, Batch batch) {
         Student student = new Student();
@@ -73,6 +86,50 @@ public class StudentMapper {
 
         return studentResponse;
     }
+    public StudentListResponse mapFromStudentToStudentListDto(User user) {
+        StudentListResponse studentResponse = new StudentListResponse();
+        studentResponse.setId(user.getUserId());
+        studentResponse.setUsername(user.getUsername());
+        studentResponse.setUname(user.getUname());
+        studentResponse.setName(user.getName());
+        studentResponse.setEmail(user.getEmail());
+        studentResponse.setBatch(user.getBatch().getName());
+        studentResponse.setNumber(user.getNumber());
+        studentResponse.setDaysAttended(numberOfDaysAttended(user));
+        studentResponse.setTotalDays(totalNumberOfDays(user.getBatch()));
+
+//        studentResponse.setFName(user.getFName());
+//        studentResponse.setFNumber(user.getFNumber());
+//        studentResponse.setCenter(user.getCenter());
+//        studentResponse.setComment(user.getComment());
+//        studentResponse.setUid(user.getUid());
+//        studentResponse.setAddress(user.getAddress());
+//        studentResponse.setJDate(user.getJDate());
+
+        return studentResponse;
+    }
+    public Integer numberOfDaysAttended(User user){
+        List<Day> days = dayRepository.findByUser(user);
+        if(days.size()>0){
+            return days.size();
+        }else{
+            return 0;
+        }
+    }
+    public Integer totalNumberOfDays(Batch batch){
+        List<Day> days = dayRepository.findAllByBatch(batch);
+        if(days.size()>0){
+            return days.size();
+        }else{
+            return 0;
+        }
+    }
+
+
+
+
+
+
 //    public StudentResponse mapFromStudentToDtoStudentDetails(User user) {
 //        StudentResponse studentResponse = new StudentResponse();
 //        studentResponse.setId(user.getUserId());
