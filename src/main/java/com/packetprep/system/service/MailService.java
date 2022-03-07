@@ -43,31 +43,7 @@ public class MailService {
     private final MailContentBuilder mailContentBuilder;
     @Autowired
     private Configuration config;
-//    @Async
-//    void sendMail(NotificationEmail notificationEmail) {
-//
-//        MimeMessagePreparator messagePreparator = mimeMessage -> {
-//            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-//            messageHelper.setFrom("info@packetprep.com");
-//            messageHelper.setTo(notificationEmail.getRecipient());
-//            messageHelper.setSubject(notificationEmail.getSubject());
-//            messageHelper.setText(notificationEmail.getBody());
-//        };
-//        try {
-//            mailSender.send(messagePreparator);
-//            log.info("Email sent!!");
-//        } catch (MailException e) {
-//            log.error("Exception occurred when sending mail", e);
-//            throw new SpringPPSystemException("Exception occurred when sending mail to " + notificationEmail.getRecipient(), e);
-//        }
-//    }
-//        public MailResponse sendMail( MailRequest request){
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("Name", request.getName());
-//            map.put("location", "Hyderabad, India");
-//
-//            return sendEmail(request, map);
-//        }
+
         public MailResponse sendEmailForActivation(MailRequest request){
             Map<String, Object> map = new HashMap<>();
             map.put("name",request.getName());

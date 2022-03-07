@@ -98,42 +98,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class);
 
-      /*  httpSecurity.cors().and()
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/auth/signup").permitAll()
-                .antMatchers("/api/auth/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/students/").permitAll()
-                .antMatchers( "/api/students/**").hasRole("ADMIN")
-                .antMatchers( "/api/batch/**").hasRole("ADMIN")
-                .antMatchers( "/api/days/**").hasRole("ADMIN")
-                .antMatchers( "/api/role/").hasRole("ADMIN")
-                .antMatchers("/api/auth/**").hasRole("ADMIN");
 
-             //   .permitAll()
-
-             //   .permitAll();
-
-            /*    .antMatchers(HttpMethod.GET, "/api/batch/")
-                .permitAll();
-                .antMatchers(HttpMethod.GET, "/api/subreddit")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/posts/")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/posts/**")
-                .permitAll()
-                .antMatchers("/v2/api-docs",
-                        "/configuration/ui",
-                        "/swagger-resources/**",
-                        "/configuration/security",
-                        "/swagger-ui.html",
-                        "/webjars/**")
-                .permitAll()
-
-                .anyRequest()
-                .authenticated();
-        httpSecurity.addFilterBefore(jwtAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class); */
     }
 
     @Autowired
